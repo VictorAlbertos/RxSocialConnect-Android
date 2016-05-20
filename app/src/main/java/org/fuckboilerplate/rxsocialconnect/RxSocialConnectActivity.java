@@ -34,6 +34,8 @@ public class RxSocialConnectActivity extends AppCompatActivity {
                             error -> helper.showError(error));
         });
 
+        findViewById(R.id.bt_twitter_get_token).setOnClickListener(v -> helper.showTokenOAuth1(TwitterApi.class));
+
         findViewById(R.id.bt_twitter_disconnect).setOnClickListener(v -> helper.closeConnection(TwitterApi.class));
     }
 
@@ -43,6 +45,8 @@ public class RxSocialConnectActivity extends AppCompatActivity {
                     .subscribe(response -> response.targetUI().helper.showResponse(response.token()),
                             error -> helper.showError(error));
         });
+
+        findViewById(R.id.bt_facebook_get_token).setOnClickListener(v -> helper.showTokenOAuth2(FacebookApi.class));
 
         findViewById(R.id.bt_facebook_disconnect).setOnClickListener(v -> helper.closeConnection(FacebookApi.class));
     }
@@ -54,6 +58,8 @@ public class RxSocialConnectActivity extends AppCompatActivity {
                             error -> helper.showError(error));
         });
 
+        findViewById(R.id.bt_google_get_token).setOnClickListener(v -> helper.showTokenOAuth2(GoogleApi20.class));
+
         findViewById(R.id.bt_google_disconnect).setOnClickListener(v -> helper.closeConnection(GoogleApi20.class));
     }
 
@@ -64,6 +70,8 @@ public class RxSocialConnectActivity extends AppCompatActivity {
                             error -> helper.showError(error));
         });
 
+        findViewById(R.id.bt_linkedin_get_token).setOnClickListener(v -> helper.showTokenOAuth2(LinkedInApi20.class));
+        
         findViewById(R.id.bt_linkedin_disconnect).setOnClickListener(v -> helper.closeConnection(LinkedInApi20.class));
     }
 }

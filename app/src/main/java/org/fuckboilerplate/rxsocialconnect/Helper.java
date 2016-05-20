@@ -13,6 +13,8 @@ import com.github.scribejava.apis.LinkedInApi20;
 import com.github.scribejava.apis.TwitterApi;
 import com.github.scribejava.core.builder.ServiceBuilder;
 import com.github.scribejava.core.builder.api.BaseApi;
+import com.github.scribejava.core.builder.api.DefaultApi10a;
+import com.github.scribejava.core.builder.api.DefaultApi20;
 import com.github.scribejava.core.model.OAuth1AccessToken;
 import com.github.scribejava.core.model.OAuth2AccessToken;
 import com.github.scribejava.core.oauth.OAuth10aService;
@@ -79,6 +81,18 @@ public class Helper {
                 .callback(callbackUrl)
                 .scope(permissions)
                 .build(LinkedInApi20.instance());
+    }
+
+    void showTokenOAuth1(Class<? extends DefaultApi10a> clazz) {
+        RxSocialConnect.getTokenOAuth1(getContext(), clazz)
+                .subscribe(token -> showResponse(token),
+                        error -> showError(error));
+    }
+
+    void showTokenOAuth2(Class<? extends DefaultApi20> clazz) {
+        RxSocialConnect.getTokenOAuth2(getContext(), clazz)
+                .subscribe(token -> showResponse(token),
+                        error -> showError(error));
     }
 
     void closeConnection(Class<? extends BaseApi> clazz) {
