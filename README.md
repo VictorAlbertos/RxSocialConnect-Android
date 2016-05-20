@@ -128,7 +128,7 @@ RxSocialConnect.closeConnections(context)
 ```
 
 ## Credits
-* Oauth core authentication: [ScribeJava](https://github.com/scribejava/scribejava/tree/master/scribejava-apis/src/test/java/com/github/scribejava/apis/examples)
+* Oauth core authentication: [ScribeJava](https://github.com/scribejava/scribejava)
 
 ## Author
 
