@@ -59,7 +59,7 @@ Every feature RxPaparazzo exposes can be accessed from both, an `activity` or a 
 
 **Limitation:**: Your fragments need to extend from `android.support.v4.app.Fragment` instead of `android.app.Fragment`, otherwise they won't be notified. 
 
-The generic type of the `observable` returned by RxSocialConnect when subscribing to any of its providers is always an instance of [Response]() class. 
+The generic type of the `observable` returned by RxSocialConnect when subscribing to any of its providers is always an instance of [Response](https://github.com/FuckBoilerplate/RxSocialConnect-Android/blob/master/rx_social_connect/src/main/java/org/fuckboilerplate/rx_social_connect/Response.java) class. 
 
 This instance holds a reference to the current Activity/Fragment, accessible calling `targetUI()` method. Because the original one may be recreated it would be unsafe calling it. Instead, you must call any method/variable of your Activity/Fragment from this instance encapsulated in the `response` instance.
 
