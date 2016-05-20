@@ -23,6 +23,8 @@ import android.content.Intent;
 import android.support.v4.app.Fragment;
 
 import com.github.scribejava.core.builder.api.BaseApi;
+import com.github.scribejava.core.builder.api.DefaultApi10a;
+import com.github.scribejava.core.builder.api.DefaultApi20;
 import com.github.scribejava.core.model.OAuth1AccessToken;
 import com.github.scribejava.core.model.Token;
 import com.github.scribejava.core.oauth.OAuth10aService;
@@ -30,11 +32,11 @@ import com.github.scribejava.core.oauth.OAuth20Service;
 import com.github.scribejava.core.oauth.OAuthService;
 
 import org.fuckboilerplate.rx_social_connect.internal.ActivityConnect;
-import org.fuckboilerplate.rx_social_connect.internal.services.OAuth1Service;
 import org.fuckboilerplate.rx_social_connect.internal.persistence.OAuth2AccessToken;
+import org.fuckboilerplate.rx_social_connect.internal.persistence.TokenPersistence;
+import org.fuckboilerplate.rx_social_connect.internal.services.OAuth1Service;
 import org.fuckboilerplate.rx_social_connect.internal.services.OAuth2Service;
 import org.fuckboilerplate.rx_social_connect.internal.services.Service;
-import org.fuckboilerplate.rx_social_connect.internal.persistence.TokenPersistence;
 
 import rx.Observable;
 import rx.functions.Func0;
@@ -125,14 +127,14 @@ public final class RxSocialConnect {
     /**
      * Remove an stored token from a previous oauth authentication cached on disk.
      * @param context the current android context.
-     * @param classToken a class provider which extends from BaseApi. The same one used to build the OAuthService, for instance, LinkedInApi20, GoogleApi20, TwitterApi and so on.
+     * @param classApi a class provider which extends from BaseApi. The same one used to build the OAuthService, for instance, LinkedInApi20, GoogleApi20, TwitterApi and so on.
      * @see BaseApi
      */
-    public static Observable<Void> closeConnection(final Context context, final Class<? extends BaseApi> classToken) {
+    public static Observable<Void> closeConnection(final Context context, final Class<? extends BaseApi> classApi) {
         return Observable.defer(new Func0<Observable<Void>>() {
             @Override public Observable<Void> call() {
                 TokenPersistence tokenPersistence = new TokenPersistence(context);
-                String keyToken = classToken.getSimpleName();
+                String keyToken = classApi.getSimpleName();
                 tokenPersistence.evict(keyToken);
                 return Observable.just(null);
             }
@@ -149,6 +151,46 @@ public final class RxSocialConnect {
                 TokenPersistence tokenPersistence = new TokenPersistence(context);
                 tokenPersistence.evictAll();
                 return Observable.just(null);
+            }
+        });
+    }
+
+    /**
+     * Retrieve the token stored resulting from previous Oauth1 authentication.
+     * @param context the current token
+     * @param classApi a class provider which extends from DefaultApi10a. The same one used to build the OAuthService.
+     * @return observable containing an OAuth1AccessToken or if not token cached observable which throws NotTokenFoundException
+     */
+    public static Observable<OAuth1AccessToken> getTokenOAuth1(final Context context, final Class<? extends DefaultApi10a> classApi) {
+        return Observable.defer(new Func0<Observable<OAuth1AccessToken>>() {
+            @Override public Observable<OAuth1AccessToken> call() {
+                TokenPersistence tokenPersistence = new TokenPersistence(context);
+                String keyToken = classApi.getSimpleName();
+
+                Observable<OAuth1AccessToken> token = tokenPersistence.get(keyToken, OAuth1AccessToken.class);
+                if (token != null) return token;
+
+                return Observable.error(new NotActiveTokenFoundException());
+            }
+        });
+    }
+
+    /**
+     * Retrieve the token stored resulting from previous Oauth2 authentication.
+     * @param context the current token
+     * @param classApi a class provider which extends from DefaultApi20. The same one used to build the OAuthService.
+     * @return observable containing an OAuth2AccessToken or if not token cached observable which throws NotTokenFoundException
+     */
+    public static Observable<OAuth2AccessToken> getTokenOAuth2(final Context context, final Class<? extends DefaultApi20> classApi) {
+        return Observable.defer(new Func0<Observable<OAuth2AccessToken>>() {
+            @Override public Observable<OAuth2AccessToken> call() {
+                TokenPersistence tokenPersistence = new TokenPersistence(context);
+                String keyToken = classApi.getSimpleName();
+
+                Observable<OAuth2AccessToken> token = tokenPersistence.get(keyToken, OAuth2AccessToken.class);
+                if (token != null) return token;
+
+                return Observable.error(new NotActiveTokenFoundException());
             }
         });
     }
