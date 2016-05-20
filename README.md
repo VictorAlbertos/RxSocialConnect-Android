@@ -1,5 +1,7 @@
 OAuth RxJava extension for Android. 
 
+[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-RxSocialConnect--Android-brightgreen.svg?style=flat)](http://android-arsenal.com/details/1/3616)
+
 # RxSocialConnect
 
 RxSocialConnect simplifies the process of retrieving authorizations tokens from multiple social networks to a minimalist observable call, from any Fragment or Activity. 
