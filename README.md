@@ -1,3 +1,5 @@
+add explnation about the two nex methods added to acces cached token
+
 [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-RxSocialConnect--Android-brightgreen.svg?style=flat)](http://android-arsenal.com/details/1/3616)
 
 OAuth RxJava extension for Android. 
@@ -86,6 +88,13 @@ RxSocialConnect.with(fragmentOrActivity, twitterService)
                     });
 ```                           
  
+Once the OAuth1 process has been successfully completed, you can retrieve the cached token calling `RxSocialConnect.getTokenOAuth1(getContext(), defaultApi10aClass)` -where `defaultApi10aClass` is the provider `class` used on the oauth1 process. 
+ 
+```java 
+        RxSocialConnect.getTokenOAuth1(getContext(), defaultApi10aClass)
+                .subscribe(token -> showResponse(token),
+                        error -> showError(error)); 
+```
 
 ### Retrieving tokens using OAuth2.
 
@@ -106,6 +115,14 @@ RxSocialConnect.with(fragmentOrActivity, facebookService)
                     });
 ```                           
  
+Once the OAuth2 process has been successfully completed, you can retrieve the cached token calling `RxSocialConnect.getTokenOAuth2(getContext(), defaultApi20Class)` -where `defaultApi20Class` is the provider `class` used on the oauth2 process. 
+ 
+```java 
+        RxSocialConnect.getTokenOAuth2(getContext(), defaultApi20Class)
+                .subscribe(token -> showResponse(token),
+                        error -> showError(error)); 
+```
+
 
 ### Token lifetime.
 After retrieving the token, RxSocialConnect will save it on disk to return it on future calls without doing again the oauth process. This token only will be evicted from cache if it is a OAuth2AccessToken instance and its expiration time has been fulfilled. 
