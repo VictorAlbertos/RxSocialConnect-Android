@@ -19,80 +19,29 @@ package org.fuckboilerplate.rx_social_connect.internal.persistence;
 import android.content.Context;
 
 import com.github.scribejava.core.model.Token;
-import com.google.gson.Gson;
-
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
 
 import rx.Observable;
 
 public final class TokenPersistence {
-    private final File cacheDirectory;
-    private static final String NAME_DIR = "RxSocialConnect";
+    private final Disk disk;
 
     public TokenPersistence(Context context) {
-        this.cacheDirectory = new File(context.getFilesDir() + File.separator + NAME_DIR);
-        if (!this.cacheDirectory.exists()) cacheDirectory.mkdir();
+        disk = new Disk(context);
     }
 
     public <T extends Token> void save(String key, T data) {
-        String wrapperJSONSerialized = new Gson().toJson(data);
-        try {
-            File file = new File(cacheDirectory, key);
-
-            FileWriter fileWriter = new FileWriter(file, false);
-            fileWriter.write(wrapperJSONSerialized);
-            fileWriter.flush();
-            fileWriter.close();
-        } catch (Exception e) {
-            throw new RuntimeException(e.getMessage());
-        }
+        disk.save(key, data);
     }
 
     public <T extends Token> Observable<T> get(String keyToken, Class<T> classToken) {
-        T response = retrieve(keyToken, classToken);
-
-        if (response != null) {
-            if (response instanceof OAuth2AccessToken) {
-                if (!((OAuth2AccessToken)response).isExpired()) {
-                    return Observable.just(response);
-                }
-            } else {
-                return Observable.just(response);
-            }
-        }
-
-        return null;
-    }
-
-    private <T> T retrieve(String key, Class<T> clazz) {
-        try {
-            File file = new File(cacheDirectory, key);
-            BufferedReader bufferedReader = new BufferedReader(new FileReader(file.getAbsoluteFile()));
-
-            T data = new Gson().fromJson(bufferedReader, clazz);
-
-            bufferedReader.close();
-            return data;
-        } catch (Exception ignore) {
-            return null;
-        }
+        return disk.get(keyToken, classToken);
     }
 
     public void evict(String key) {
-        File file = new File(cacheDirectory, key);
-        file.delete();
+        disk.evict(key);
     }
 
     public void evictAll() {
-        File[] tokens = cacheDirectory.listFiles();
-
-        if (tokens == null) return;
-
-        for (File token : tokens) {
-            token.delete();
-        }
+        disk.evictAll();
     }
 }
