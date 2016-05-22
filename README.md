@@ -1,5 +1,3 @@
-add explnation about the two nex methods added to acces cached token
-
 [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-RxSocialConnect--Android-brightgreen.svg?style=flat)](http://android-arsenal.com/details/1/3616)
 
 OAuth RxJava extension for Android. 
