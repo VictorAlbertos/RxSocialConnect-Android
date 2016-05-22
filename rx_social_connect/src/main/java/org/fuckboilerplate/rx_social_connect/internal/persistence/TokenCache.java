@@ -17,9 +17,11 @@
 package org.fuckboilerplate.rx_social_connect.internal.persistence;
 
 import android.content.Context;
+import android.support.annotation.VisibleForTesting;
 
 import com.github.scribejava.core.model.Token;
 
+import java.io.File;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -29,10 +31,15 @@ public enum TokenCache {
     INSTANCE();
 
     private Disk disk;
-    private ConcurrentMap<String, Observable<? extends Token>> memory;
+    @VisibleForTesting ConcurrentMap<String, Observable<? extends Token>> memory;
 
     public void init(Context context) {
-        disk = new Disk(context);
+        disk = new Disk(context.getFilesDir());
+        memory = new ConcurrentHashMap();
+    }
+
+    @VisibleForTesting void init(File file) {
+        disk = new Disk(file);
         memory = new ConcurrentHashMap();
     }
 
@@ -43,8 +50,8 @@ public enum TokenCache {
 
     public Observable<? extends Token> get(String keyToken, Class<? extends Token> classToken) {
         Observable<? extends Token> token = memory.get(keyToken);
-        if (token != null) return token;
-        return disk.get(keyToken, classToken);
+        if (token == null) token = disk.get(keyToken, classToken);
+        return token;
     }
 
     public void evict(String key) {
@@ -58,4 +65,5 @@ public enum TokenCache {
         }
         disk.evictAll();
     }
+
 }

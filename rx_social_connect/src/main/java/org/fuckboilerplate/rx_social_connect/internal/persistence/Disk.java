@@ -16,8 +16,6 @@
 
 package org.fuckboilerplate.rx_social_connect.internal.persistence;
 
-import android.content.Context;
-
 import com.github.scribejava.core.model.Token;
 import com.google.gson.Gson;
 
@@ -32,8 +30,8 @@ public class Disk<T extends Token> {
     private final File cacheDirectory;
     private static final String NAME_DIR = "RxSocialConnect";
 
-    public Disk(Context context) {
-        this.cacheDirectory = new File(context.getFilesDir() + File.separator + NAME_DIR);
+    public Disk(File file) {
+        this.cacheDirectory = new File(file + File.separator + NAME_DIR);
         if (!this.cacheDirectory.exists()) cacheDirectory.mkdir();
     }
 
