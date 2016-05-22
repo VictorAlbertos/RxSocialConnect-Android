@@ -20,7 +20,6 @@ import org.junit.runners.MethodSorters;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.web.sugar.Web.onWebView;
 import static android.support.test.espresso.web.webdriver.DriverAtoms.findElement;
@@ -33,7 +32,7 @@ import static android.support.test.espresso.web.webdriver.DriverAtoms.webClick;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public abstract class RxSocialConnectTest {
 
-    @Test public void _1_Connect_With_Facebook() {
+    @Test public void _a1_Connect_With_Facebook() {
         onView(withId(R.id.tv_token)).check(matches(shouldBeEmpty(true)));
 
         onView(withId(R.id.bt_facebook)).perform(click());
@@ -55,14 +54,33 @@ public abstract class RxSocialConnectTest {
         onView(withId(R.id.tv_token)).check(matches(shouldBeEmpty(false)));
     }
 
-    @Test public void _2_Connected_Facebook() {
+    @Test public void _a2_Connected_Facebook() {
         onView(withId(R.id.tv_token)).check(matches(shouldBeEmpty(true)));
         onView(withId(R.id.bt_facebook)).perform(click());
         waitTime();
         onView(withId(R.id.tv_token)).check(matches(shouldBeEmpty(false)));
     }
 
-    @Test public void _3_Connect_With_Google() {
+    @Test public void _a3_Get_Token_Facebook() {
+        onView(withId(R.id.tv_token)).check(matches(shouldBeEmpty(true)));
+        onView(withId(R.id.bt_facebook_get_token)).perform(click());
+        waitTime();
+        onView(withId(R.id.tv_token)).check(matches(shouldBeEmpty(false)));
+    }
+
+    @Test public void _a4_Disconnect_Facebook() {
+        onView(withId(R.id.bt_facebook_disconnect)).perform(click());
+        waitTime();
+    }
+
+    @Test public void _a5_Get_Token_Error_Facebook() {
+        onView(withId(R.id.tv_token)).check(matches(shouldBeEmpty(true)));
+        onView(withId(R.id.bt_facebook_get_token)).perform(click());
+        waitTime();
+        onView(withId(R.id.tv_token)).check(matches(shouldBeEmpty(true)));
+    }
+
+    @Test public void _b1_Connect_With_Google() {
         onView(withId(R.id.tv_token)).check(matches(shouldBeEmpty(true)));
 
         onView(withId(R.id.bt_google)).perform(click());
@@ -87,14 +105,33 @@ public abstract class RxSocialConnectTest {
         onView(withId(R.id.tv_token)).check(matches(shouldBeEmpty(false)));
     }
 
-    @Test public void _4_Connected_Google() {
+    @Test public void _b2_Connected_Google() {
         onView(withId(R.id.tv_token)).check(matches(shouldBeEmpty(true)));
         onView(withId(R.id.bt_google)).perform(click());
         waitTime();
         onView(withId(R.id.tv_token)).check(matches(shouldBeEmpty(false)));
     }
 
-    @Test public void _5_Connect_With_LinkedIn() {
+    @Test public void _b3_Get_Token_Google() {
+        onView(withId(R.id.tv_token)).check(matches(shouldBeEmpty(true)));
+        onView(withId(R.id.bt_google_get_token)).perform(click());
+        waitTime();
+        onView(withId(R.id.tv_token)).check(matches(shouldBeEmpty(false)));
+    }
+
+    @Test public void _b4_Disconnect_Google() {
+        onView(withId(R.id.bt_google_disconnect)).perform(click());
+        waitTime();
+    }
+
+    @Test public void _b5_Get_Token_Error_Google() {
+        onView(withId(R.id.tv_token)).check(matches(shouldBeEmpty(true)));
+        onView(withId(R.id.bt_google_get_token)).perform(click());
+        waitTime();
+        onView(withId(R.id.tv_token)).check(matches(shouldBeEmpty(true)));
+    }
+
+    @Test public void _d1_Connect_With_LinkedIn() {
         onView(withId(R.id.tv_token)).check(matches(shouldBeEmpty(true)));
 
         onView(withId(R.id.bt_linkedin)).perform(click());
@@ -114,22 +151,30 @@ public abstract class RxSocialConnectTest {
         onView(withId(R.id.tv_token)).check(matches(shouldBeEmpty(false)));
     }
 
-    @Test public void _6_Connected_LinkedIn() {
+    @Test public void _d2_Connected_LinkedIn() {
         onView(withId(R.id.tv_token)).check(matches(shouldBeEmpty(true)));
         onView(withId(R.id.bt_linkedin)).perform(click());
         waitTime();
         onView(withId(R.id.tv_token)).check(matches(shouldBeEmpty(false)));
     }
 
-    @Test public void _7_Disconnect_All() {
-        onView(withId(R.id.bt_all_disconnect)).perform(click());
+    @Test public void _d3_Get_Token_LinkedIn() {
+        onView(withId(R.id.tv_token)).check(matches(shouldBeEmpty(true)));
+        onView(withId(R.id.bt_linkedin_get_token)).perform(click());
+        waitTime();
+        onView(withId(R.id.tv_token)).check(matches(shouldBeEmpty(false)));
+    }
+
+    @Test public void _d4_Disconnect_LinkedIn() {
+        onView(withId(R.id.bt_linkedin_disconnect)).perform(click());
         waitTime();
     }
 
-    @Test public void _8_LinkedIn_Has_Been_Disconnected() {
+    @Test public void _d5_Get_Token_Error_LinkedIn() {
         onView(withId(R.id.tv_token)).check(matches(shouldBeEmpty(true)));
-        onView(withId(R.id.bt_linkedin)).perform(click());
-        onView(withId(R.id.webview)).check(matches(isDisplayed()));
+        onView(withId(R.id.bt_linkedin_get_token)).perform(click());
+        waitTime();
+        onView(withId(R.id.tv_token)).check(matches(shouldBeEmpty(true)));
     }
 
 /*    @Test public void Connect_With_Twitter() {
