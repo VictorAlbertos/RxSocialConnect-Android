@@ -10,17 +10,28 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
+        <TextView
+            android:text="Twitter: "
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
         <Button
             android:id="@+id/bt_twitter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Twitter connect" />
+            android:text="Connect" />
+
+        <Button
+            android:id="@+id/bt_twitter_get_token"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Get token" />
 
         <Button
             android:id="@+id/bt_twitter_disconnect"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Twitter disconnect" />
+            android:text="Disconnect" />
 
     </LinearLayout>
 
@@ -28,18 +39,29 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
+
+        <TextView
+            android:text="Facebook: "
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
         <Button
             android:id="@+id/bt_facebook"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Facebook" />
+            android:text="Connect" />
+
+        <Button
+            android:id="@+id/bt_facebook_get_token"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Get token" />
 
         <Button
             android:id="@+id/bt_facebook_disconnect"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Facebook disconnect" />
+            android:text="Disconnect" />
 
     </LinearLayout>
 
@@ -48,17 +70,27 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
+        <TextView
+            android:text="Google: "
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
         <Button
             android:id="@+id/bt_google"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Google" />
+            android:text="Connect" />
+
+        <Button
+            android:id="@+id/bt_google_get_token"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Get token" />
 
         <Button
             android:id="@+id/bt_google_disconnect"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Google disconnect" />
+            android:text="Disconnect" />
 
     </LinearLayout>
 
@@ -67,17 +99,28 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
+        <TextView
+            android:text="Linkedin: "
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
         <Button
             android:id="@+id/bt_linkedin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Linkedin" />
+            android:text="Connect" />
+
+        <Button
+            android:id="@+id/bt_linkedin_get_token"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Get token" />
 
         <Button
             android:id="@+id/bt_linkedin_disconnect"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Linkedin disconnect" />
+            android:text="Disconnect" />
 
     </LinearLayout>
 
