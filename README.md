@@ -1,6 +1,6 @@
 [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-RxSocialConnect--Android-brightgreen.svg?style=flat)](http://android-arsenal.com/details/1/3616)
 
-OAuth RxJava extension for Android. 
+OAuth RxJava extension for Android. iOS version is located at this [repository](https://github.com/FuckBoilerplate/RxSocialConnect-iOS). 
 
 # RxSocialConnect
 
