@@ -28,7 +28,7 @@ import java.io.FileWriter;
 
 import rx.Observable;
 
-public class Disk {
+public class Disk<T extends Token> {
     private final File cacheDirectory;
     private static final String NAME_DIR = "RxSocialConnect";
 
@@ -37,7 +37,7 @@ public class Disk {
         if (!this.cacheDirectory.exists()) cacheDirectory.mkdir();
     }
 
-    public <T extends Token> void save(String key, T data) {
+    public void save(String key, T data) {
         String wrapperJSONSerialized = new Gson().toJson(data);
         try {
             File file = new File(cacheDirectory, key);
@@ -51,7 +51,7 @@ public class Disk {
         }
     }
 
-    public <T extends Token> Observable<T> get(String keyToken, Class<T> classToken) {
+    public Observable<T> get(String keyToken, Class<T> classToken) {
         T response = retrieve(keyToken, classToken);
 
         if (response != null) {
@@ -67,7 +67,7 @@ public class Disk {
         return null;
     }
 
-    private <T> T retrieve(String key, Class<T> clazz) {
+    private T retrieve(String key, Class<T> clazz) {
         try {
             File file = new File(cacheDirectory, key);
             BufferedReader bufferedReader = new BufferedReader(new FileReader(file.getAbsoluteFile()));

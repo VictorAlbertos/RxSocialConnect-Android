@@ -20,28 +20,42 @@ import android.content.Context;
 
 import com.github.scribejava.core.model.Token;
 
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
+
 import rx.Observable;
 
-public final class TokenPersistence {
-    private final Disk disk;
+public enum TokenCache {
+    INSTANCE();
 
-    public TokenPersistence(Context context) {
+    private Disk disk;
+    private ConcurrentMap<String, Observable<? extends Token>> memory;
+
+    public void init(Context context) {
         disk = new Disk(context);
+        memory = new ConcurrentHashMap();
     }
 
     public <T extends Token> void save(String key, T data) {
+        memory.put(key, Observable.just(data));
         disk.save(key, data);
     }
 
-    public <T extends Token> Observable<T> get(String keyToken, Class<T> classToken) {
+    public Observable<? extends Token> get(String keyToken, Class<? extends Token> classToken) {
+        Observable<? extends Token> token = memory.get(keyToken);
+        if (token != null) return token;
         return disk.get(keyToken, classToken);
     }
 
     public void evict(String key) {
+        memory.remove(key);
         disk.evict(key);
     }
 
     public void evictAll() {
+        for (String key : memory.keySet()) {
+            memory.remove(key);
+        }
         disk.evictAll();
     }
 }

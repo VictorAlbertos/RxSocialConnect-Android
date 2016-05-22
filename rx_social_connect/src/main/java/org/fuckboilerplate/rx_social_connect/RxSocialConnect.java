@@ -18,7 +18,6 @@ package org.fuckboilerplate.rx_social_connect;
 
 import android.app.Activity;
 import android.app.Application;
-import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
 
@@ -33,7 +32,7 @@ import com.github.scribejava.core.oauth.OAuthService;
 
 import org.fuckboilerplate.rx_social_connect.internal.ActivityConnect;
 import org.fuckboilerplate.rx_social_connect.internal.persistence.OAuth2AccessToken;
-import org.fuckboilerplate.rx_social_connect.internal.persistence.TokenPersistence;
+import org.fuckboilerplate.rx_social_connect.internal.persistence.TokenCache;
 import org.fuckboilerplate.rx_social_connect.internal.services.OAuth1Service;
 import org.fuckboilerplate.rx_social_connect.internal.services.OAuth2Service;
 import org.fuckboilerplate.rx_social_connect.internal.services.Service;
@@ -50,6 +49,7 @@ public final class RxSocialConnect {
      */
     public static void register(Application application) {
         RxActivityResult.register(application);
+        TokenCache.INSTANCE.init(application);
     }
 
     /**
@@ -126,16 +126,13 @@ public final class RxSocialConnect {
 
     /**
      * Remove an stored token from a previous oauth authentication cached on disk.
-     * @param context the current android context.
-     * @param classApi a class provider which extends from BaseApi. The same one used to build the OAuthService, for instance, LinkedInApi20, GoogleApi20, TwitterApi and so on.
      * @see BaseApi
      */
-    public static Observable<Void> closeConnection(final Context context, final Class<? extends BaseApi> classApi) {
+    public static Observable<Void> closeConnection(final Class<? extends BaseApi> classApi) {
         return Observable.defer(new Func0<Observable<Void>>() {
             @Override public Observable<Void> call() {
-                TokenPersistence tokenPersistence = new TokenPersistence(context);
                 String keyToken = classApi.getSimpleName();
-                tokenPersistence.evict(keyToken);
+                TokenCache.INSTANCE.evict(keyToken);
                 return Observable.just(null);
             }
         });
@@ -143,13 +140,11 @@ public final class RxSocialConnect {
 
     /**
      * Remove all stored tokens from previous oauth authentications cached on disk.
-     * @param context the current android context.
      */
-    public static Observable<Void> closeConnections(final Context context) {
+    public static Observable<Void> closeConnections() {
         return Observable.defer(new Func0<Observable<Void>>() {
             @Override public Observable<Void> call() {
-                TokenPersistence tokenPersistence = new TokenPersistence(context);
-                tokenPersistence.evictAll();
+                TokenCache.INSTANCE.evictAll();
                 return Observable.just(null);
             }
         });
@@ -157,17 +152,15 @@ public final class RxSocialConnect {
 
     /**
      * Retrieve the token stored resulting from previous Oauth1 authentication.
-     * @param context the current token
      * @param classApi a class provider which extends from DefaultApi10a. The same one used to build the OAuthService.
      * @return observable containing an OAuth1AccessToken or if not token cached observable which throws NotTokenFoundException
      */
-    public static Observable<OAuth1AccessToken> getTokenOAuth1(final Context context, final Class<? extends DefaultApi10a> classApi) {
+    public static Observable<OAuth1AccessToken> getTokenOAuth1(final Class<? extends DefaultApi10a> classApi) {
         return Observable.defer(new Func0<Observable<OAuth1AccessToken>>() {
             @Override public Observable<OAuth1AccessToken> call() {
-                TokenPersistence tokenPersistence = new TokenPersistence(context);
                 String keyToken = classApi.getSimpleName();
 
-                Observable<OAuth1AccessToken> token = tokenPersistence.get(keyToken, OAuth1AccessToken.class);
+                Observable<OAuth1AccessToken> token = (Observable<OAuth1AccessToken>) TokenCache.INSTANCE.get(keyToken, OAuth1AccessToken.class);
                 if (token != null) return token;
 
                 return Observable.error(new NotActiveTokenFoundException());
@@ -177,17 +170,15 @@ public final class RxSocialConnect {
 
     /**
      * Retrieve the token stored resulting from previous Oauth2 authentication.
-     * @param context the current token
      * @param classApi a class provider which extends from DefaultApi20. The same one used to build the OAuthService.
      * @return observable containing an OAuth2AccessToken or if not token cached observable which throws NotTokenFoundException
      */
-    public static Observable<OAuth2AccessToken> getTokenOAuth2(final Context context, final Class<? extends DefaultApi20> classApi) {
+    public static Observable<OAuth2AccessToken> getTokenOAuth2(final Class<? extends DefaultApi20> classApi) {
         return Observable.defer(new Func0<Observable<OAuth2AccessToken>>() {
             @Override public Observable<OAuth2AccessToken> call() {
-                TokenPersistence tokenPersistence = new TokenPersistence(context);
                 String keyToken = classApi.getSimpleName();
 
-                Observable<OAuth2AccessToken> token = tokenPersistence.get(keyToken, OAuth2AccessToken.class);
+                Observable<OAuth2AccessToken> token = (Observable<OAuth2AccessToken>) TokenCache.INSTANCE.get(keyToken, OAuth2AccessToken.class);
                 if (token != null) return token;
 
                 return Observable.error(new NotActiveTokenFoundException());
@@ -198,9 +189,8 @@ public final class RxSocialConnect {
     private static final String ERROR_RETRIEVING_TOKEN = "Error retrieving token";
     private static <T extends Token> Observable<Response<Object, T>> startActivity(final Object targetUI, Service<T, ? extends OAuthService> service, final String keyToken, final Class<T> classToken) {
         Activity activity = targetUI instanceof Activity ? (Activity) targetUI : ((Fragment) targetUI).getActivity();
-        final TokenPersistence tokenPersistence = new TokenPersistence(activity);
 
-        Observable<T> response = tokenPersistence.get(keyToken, classToken);
+        Observable<T> response = (Observable<T>) TokenCache.INSTANCE.get(keyToken, classToken);
         if (response != null) return response.map(new Func1<T, Response<Object, T>>() {
             @Override public Response<Object, T> call(T token) {
                 return new Response(targetUI, token);
@@ -229,7 +219,7 @@ public final class RxSocialConnect {
 
                 if (result.resultCode() == Activity.RESULT_OK) {
                     T token = (T) result.data().getExtras().getSerializable(ActivityConnect.KEY_RESULT);
-                    tokenPersistence.save(keyToken, token);
+                    TokenCache.INSTANCE.save(keyToken, token);
                     return new Response(targetUI, token);
                 }
 

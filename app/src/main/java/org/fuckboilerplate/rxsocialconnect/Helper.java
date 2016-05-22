@@ -84,20 +84,20 @@ public class Helper {
     }
 
     void showTokenOAuth1(Class<? extends DefaultApi10a> clazz) {
-        RxSocialConnect.getTokenOAuth1(getContext(), clazz)
+        RxSocialConnect.getTokenOAuth1(clazz)
                 .subscribe(token -> showResponse(token),
                         error -> showError(error));
     }
 
     void showTokenOAuth2(Class<? extends DefaultApi20> clazz) {
-        RxSocialConnect.getTokenOAuth2(getContext(), clazz)
+        RxSocialConnect.getTokenOAuth2(clazz)
                 .subscribe(token -> showResponse(token),
                         error -> showError(error));
     }
 
     void closeConnection(Class<? extends BaseApi> clazz) {
         RxSocialConnect
-                .closeConnection(getContext(), clazz)
+                .closeConnection(clazz)
                 .subscribe(_I -> {
                     showToast(clazz.getName() + " disconnected");
                     clearEditTexts();
@@ -106,7 +106,7 @@ public class Helper {
 
     void closeAllConnection() {
         RxSocialConnect
-                .closeConnections(getContext())
+                .closeConnections()
                 .subscribe(_I -> {
                     showToast("All disconnected");
                     clearEditTexts();
