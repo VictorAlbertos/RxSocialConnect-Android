@@ -18,4 +18,8 @@ package org.fuckboilerplate.rx_social_connect;
 
 public class NotActiveTokenFoundException extends RuntimeException {
 
+    public NotActiveTokenFoundException() {
+        super("There is no active token for the provider requested");
+    }
+
 }

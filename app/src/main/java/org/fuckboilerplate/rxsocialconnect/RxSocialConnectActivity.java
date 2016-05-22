@@ -71,7 +71,7 @@ public class RxSocialConnectActivity extends AppCompatActivity {
         });
 
         findViewById(R.id.bt_linkedin_get_token).setOnClickListener(v -> helper.showTokenOAuth2(LinkedInApi20.class));
-        
+
         findViewById(R.id.bt_linkedin_disconnect).setOnClickListener(v -> helper.closeConnection(LinkedInApi20.class));
     }
 }
