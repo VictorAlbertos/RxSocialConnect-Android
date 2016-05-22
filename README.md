@@ -57,7 +57,7 @@ public class SampleApp extends Application {
 }
 ```
 
-Every feature RxPaparazzo exposes can be accessed from both, an `activity` or a `fragment` instance. 
+Every feature RxSocialConnect exposes can be accessed from both, an `activity` or a `fragment` instance. 
 
 **Limitation:**: Your fragments need to extend from `android.support.v4.app.Fragment` instead of `android.app.Fragment`, otherwise they won't be notified. 
 
