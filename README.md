@@ -86,10 +86,10 @@ RxSocialConnect.with(fragmentOrActivity, twitterService)
                     });
 ```                           
  
-Once the OAuth1 process has been successfully completed, you can retrieve the cached token calling `RxSocialConnect.getTokenOAuth1(getContext(), defaultApi10aClass)` -where `defaultApi10aClass` is the provider `class` used on the oauth1 process. 
+Once the OAuth1 process has been successfully completed, you can retrieve the cached token calling `RxSocialConnect.getTokenOAuth1(defaultApi10aClass)` -where `defaultApi10aClass` is the provider `class` used on the oauth1 process. 
  
 ```java 
-        RxSocialConnect.getTokenOAuth1(getContext(), defaultApi10aClass)
+        RxSocialConnect.getTokenOAuth1(defaultApi10aClass)
                 .subscribe(token -> showResponse(token),
                         error -> showError(error)); 
 ```
@@ -113,10 +113,10 @@ RxSocialConnect.with(fragmentOrActivity, facebookService)
                     });
 ```                           
  
-Once the OAuth2 process has been successfully completed, you can retrieve the cached token calling `RxSocialConnect.getTokenOAuth2(getContext(), defaultApi20Class)` -where `defaultApi20Class` is the provider `class` used on the oauth2 process. 
+Once the OAuth2 process has been successfully completed, you can retrieve the cached token calling `RxSocialConnect.getTokenOAuth2(defaultApi20Class)` -where `defaultApi20Class` is the provider `class` used on the oauth2 process. 
  
 ```java 
-        RxSocialConnect.getTokenOAuth2(getContext(), defaultApi20Class)
+        RxSocialConnect.getTokenOAuth2(defaultApi20Class)
                 .subscribe(token -> showResponse(token),
                         error -> showError(error)); 
 ```
@@ -125,22 +125,22 @@ Once the OAuth2 process has been successfully completed, you can retrieve the ca
 ### Token lifetime.
 After retrieving the token, RxSocialConnect will save it on disk to return it on future calls without doing again the oauth process. This token only will be evicted from cache if it is a OAuth2AccessToken instance and its expiration time has been fulfilled. 
 
-But, if you need to close an specific connection (or delete the token from the disk for that matters), you can call `RxSocialConnect.closeConnection(context, baseApiClass)` at any time to evict the cached token -where `baseApiClass` is the provider `class` used on the oauth process. 
+But, if you need to close an specific connection (or delete the token from the disk for that matters), you can call `RxSocialConnect.closeConnection(baseApiClass)` at any time to evict the cached token -where `baseApiClass` is the provider `class` used on the oauth process. 
 
 ```java
 //Facebook
-RxSocialConnect.closeConnection(context, FacebookApi.class)
+RxSocialConnect.closeConnection(FacebookApi.class)
                 .subscribe(_I ->  showToast("Facebook disconnected"));
 
 //Twitter
-RxSocialConnect.closeConnection(context, TwitterApi.class)
+RxSocialConnect.closeConnection(TwitterApi.class)
                 .subscribe(_I ->  showToast("Twitter disconnected"));
 ```
 
-You can also close all the connections at once, calling `RxSocialConnect.closeConnections(context)`
+You can also close all the connections at once, calling `RxSocialConnect.closeConnections()`
 
 ```java
-RxSocialConnect.closeConnections(context)
+RxSocialConnect.closeConnections()
                 .subscribe(_I ->  showToast("All disconnected"));
 ```
 
