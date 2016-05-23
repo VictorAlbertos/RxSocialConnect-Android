@@ -29,4 +29,8 @@ public final class OAuth2AccessToken extends com.github.scribejava.core.model.OA
     public boolean isExpired() {
         return System.currentTimeMillis() > expirationDate;
     }
+
+    public com.github.scribejava.core.model.OAuth2AccessToken toOAuth2AccessTokenScribe() {
+        return this;
+    }
 }

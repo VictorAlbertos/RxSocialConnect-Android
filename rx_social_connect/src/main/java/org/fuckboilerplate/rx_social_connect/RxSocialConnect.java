@@ -173,13 +173,19 @@ public final class RxSocialConnect {
      * @param classApi a class provider which extends from DefaultApi20. The same one used to build the OAuthService.
      * @return observable containing an OAuth2AccessToken or if not token cached observable which throws NotTokenFoundException
      */
-    public static Observable<OAuth2AccessToken> getTokenOAuth2(final Class<? extends DefaultApi20> classApi) {
-        return Observable.defer(new Func0<Observable<OAuth2AccessToken>>() {
-            @Override public Observable<OAuth2AccessToken> call() {
+    public static Observable<com.github.scribejava.core.model.OAuth2AccessToken> getTokenOAuth2(final Class<? extends DefaultApi20> classApi) {
+        return Observable.defer(new Func0<Observable<com.github.scribejava.core.model.OAuth2AccessToken>>() {
+            @Override public Observable<com.github.scribejava.core.model.OAuth2AccessToken> call() {
                 String keyToken = classApi.getSimpleName();
 
-                Observable<OAuth2AccessToken> token = (Observable<OAuth2AccessToken>) TokenCache.INSTANCE.get(keyToken, OAuth2AccessToken.class);
-                if (token != null) return token;
+                Observable<OAuth2AccessToken> oToken = (Observable<OAuth2AccessToken>) TokenCache.INSTANCE.get(keyToken, OAuth2AccessToken.class);
+                if (oToken != null) {
+                    return oToken.map(new Func1<OAuth2AccessToken, com.github.scribejava.core.model.OAuth2AccessToken>() {
+                        @Override public com.github.scribejava.core.model.OAuth2AccessToken call(OAuth2AccessToken token) {
+                            return token.toOAuth2AccessTokenScribe();
+                        }
+                    });
+                }
 
                 return Observable.error(new NotActiveTokenFoundException());
             }

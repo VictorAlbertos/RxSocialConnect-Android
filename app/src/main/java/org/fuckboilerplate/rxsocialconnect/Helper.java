@@ -46,7 +46,7 @@ public class Helper {
         String appId = "452930454916873";
         String appSecret = "4a643dd4c4537f01411ab7bb44736f1f";
         String callbackUrl = "http://victoralbertos.com/";
-        String permissions = "public_profile";
+        String permissions = "public_profile, email";
 
         return new ServiceBuilder()
                 .apiKey(appId)
