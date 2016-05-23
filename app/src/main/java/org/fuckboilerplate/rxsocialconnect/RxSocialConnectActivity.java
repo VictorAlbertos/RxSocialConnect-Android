@@ -7,6 +7,7 @@ import com.github.scribejava.apis.FacebookApi;
 import com.github.scribejava.apis.GoogleApi20;
 import com.github.scribejava.apis.LinkedInApi20;
 import com.github.scribejava.apis.TwitterApi;
+import com.github.scribejava.apis.YahooApi;
 
 import org.fuckboilerplate.rx_social_connect.RxSocialConnect;
 
@@ -23,6 +24,7 @@ public class RxSocialConnectActivity extends AppCompatActivity {
         setUpFacebook();
         setUpGoogle();
         setUpLinkedIn();
+        setUpYahoo();
 
         findViewById(R.id.bt_all_disconnect).setOnClickListener(v -> helper.closeAllConnection());
     }
@@ -73,5 +75,17 @@ public class RxSocialConnectActivity extends AppCompatActivity {
         findViewById(R.id.bt_linkedin_get_token).setOnClickListener(v -> helper.showTokenOAuth2(LinkedInApi20.class));
 
         findViewById(R.id.bt_linkedin_disconnect).setOnClickListener(v -> helper.closeConnection(LinkedInApi20.class));
+    }
+
+    private void setUpYahoo() {
+        findViewById(R.id.bt_yahoo).setOnClickListener(v -> {
+            RxSocialConnect.with(RxSocialConnectActivity.this, helper.yahooService())
+                    .subscribe(response -> response.targetUI().helper.showResponse(response.token()),
+                            error -> helper.showError(error));
+        });
+
+        findViewById(R.id.bt_yahoo_get_token).setOnClickListener(v -> helper.showTokenOAuth1(YahooApi.class));
+
+        findViewById(R.id.bt_yahoo_disconnect).setOnClickListener(v -> helper.closeConnection(YahooApi.class));
     }
 }

@@ -11,6 +11,7 @@ import com.github.scribejava.apis.FacebookApi;
 import com.github.scribejava.apis.GoogleApi20;
 import com.github.scribejava.apis.LinkedInApi20;
 import com.github.scribejava.apis.TwitterApi;
+import com.github.scribejava.apis.YahooApi;
 import com.github.scribejava.core.builder.ServiceBuilder;
 import com.github.scribejava.core.builder.api.BaseApi;
 import com.github.scribejava.core.builder.api.DefaultApi10a;
@@ -81,6 +82,18 @@ public class Helper {
                 .callback(callbackUrl)
                 .scope(permissions)
                 .build(LinkedInApi20.instance());
+    }
+
+    OAuth10aService yahooService() {
+        String clientId = "dj0yJmk9Sk9NZUlPc0RaODVDJmQ9WVdrOVRubHlWMWRuTTJVbWNHbzlNQS0tJnM9Y29uc3VtZXJzZWNyZXQmeD0wNw--";
+        String clientSecret = "449b2d2f06d986297d65df7fc020544bf71eb10c";
+        String callbackUrl = "http://victoralbertos.com";
+
+        return new ServiceBuilder()
+                .apiKey(clientId)
+                .apiSecret(clientSecret)
+                .callback(callbackUrl)
+                .build(YahooApi.instance());
     }
 
     void showTokenOAuth1(Class<? extends DefaultApi10a> clazz) {

@@ -177,6 +177,64 @@ public abstract class RxSocialConnectTest {
         onView(withId(R.id.tv_token)).check(matches(shouldBeEmpty(true)));
     }
 
+    @Test public void _e1_Connect_With_Yahoo() {
+        onView(withId(R.id.tv_token)).check(matches(shouldBeEmpty(true)));
+
+        onView(withId(R.id.bt_yahoo)).perform(click());
+
+        waitTime();
+        rotateDevice();
+
+        onWebView()
+                .withElement(findElement(Locator.NAME, "username"))
+                .perform(DriverAtoms.webKeys(Credentials.EMAIL_YAHOO))
+                .withElement(findElement(Locator.NAME, "signin"))
+                .perform(webClick());
+
+        waitTime();
+
+        onWebView()
+                .withElement(findElement(Locator.NAME, "passwd"))
+                .perform(DriverAtoms.webKeys(Credentials.PASSWORD))
+                .withElement(findElement(Locator.NAME, "signin"))
+                .perform(webClick());
+
+        waitTime();
+
+        onWebView()
+                .withElement(findElement(Locator.NAME, "agree"))
+                .perform(webClick());
+
+        waitTime();
+        onView(withId(R.id.tv_token)).check(matches(shouldBeEmpty(false)));
+    }
+
+    @Test public void _e2_Connected_Yahoo() {
+        onView(withId(R.id.tv_token)).check(matches(shouldBeEmpty(true)));
+        onView(withId(R.id.bt_yahoo)).perform(click());
+        waitTime();
+        onView(withId(R.id.tv_token)).check(matches(shouldBeEmpty(false)));
+    }
+
+    @Test public void _e3_Get_Token_Yahoo() {
+        onView(withId(R.id.tv_token)).check(matches(shouldBeEmpty(true)));
+        onView(withId(R.id.bt_yahoo_get_token)).perform(click());
+        waitTime();
+        onView(withId(R.id.tv_token)).check(matches(shouldBeEmpty(false)));
+    }
+
+    @Test public void _e4_Disconnect_Yahoo() {
+        onView(withId(R.id.bt_yahoo_disconnect)).perform(click());
+        waitTime();
+    }
+
+    @Test public void _e5_Get_Token_Error_Yahoo() {
+        onView(withId(R.id.tv_token)).check(matches(shouldBeEmpty(true)));
+        onView(withId(R.id.bt_yahoo_get_token)).perform(click());
+        waitTime();
+        onView(withId(R.id.tv_token)).check(matches(shouldBeEmpty(true)));
+    }
+
 /*    @Test public void Connect_With_Twitter() {
         //Can not be performed due to security restrictions.
         //Exception: Caused by: java.lang.RuntimeException: Fatal exception checking document state: Evaluation: status: 13 value: {message=Refused to evaluate a string as JavaScript because 'unsafe-eval' is not an allowed source of script in the following Content Security Policy directive: "script-src https://abs.twimg.com https://abs-0.twimg.com https://twitter.com https://mobile.twitter.com".
