@@ -31,7 +31,7 @@ public enum TokenCache {
     INSTANCE();
 
     private Disk disk;
-    @VisibleForTesting ConcurrentMap<String, Observable<? extends Token>> memory;
+    private ConcurrentMap<String, Observable<? extends Token>> memory;
 
     public void init(Context context) {
         disk = new Disk(context.getFilesDir());
@@ -50,7 +50,10 @@ public enum TokenCache {
 
     public Observable<? extends Token> get(String keyToken, Class<? extends Token> classToken) {
         Observable<? extends Token> token = memory.get(keyToken);
-        if (token == null) token = disk.get(keyToken, classToken);
+        if (token == null) {
+            token = disk.get(keyToken, classToken);
+            if (token != null) memory.put(keyToken, token);
+        }
         return token;
     }
 
