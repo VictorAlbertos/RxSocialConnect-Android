@@ -89,7 +89,7 @@ RxSocialConnect.with(fragmentOrActivity, twitterService)
 Once the OAuth1 process has been successfully completed, you can retrieve the cached token calling `RxSocialConnect.getTokenOAuth1(defaultApi10aClass)` -where `defaultApi10aClass` is the provider `class` used on the oauth1 process. 
  
 ```java 
-        RxSocialConnect.getTokenOAuth1(defaultApi10aClass)
+        RxSocialConnect.getTokenOAuth1(TwitterApi.class)
                 .subscribe(token -> showResponse(token),
                         error -> showError(error)); 
 ```
@@ -116,7 +116,7 @@ RxSocialConnect.with(fragmentOrActivity, facebookService)
 Once the OAuth2 process has been successfully completed, you can retrieve the cached token calling `RxSocialConnect.getTokenOAuth2(defaultApi20Class)` -where `defaultApi20Class` is the provider `class` used on the oauth2 process. 
  
 ```java 
-        RxSocialConnect.getTokenOAuth2(defaultApi20Class)
+        RxSocialConnect.getTokenOAuth2(FacebookApi.class)
                 .subscribe(token -> showResponse(token),
                         error -> showError(error)); 
 ```
@@ -144,11 +144,13 @@ RxSocialConnect.closeConnections()
                 .subscribe(_I ->  showToast("All disconnected"));
 ```
 
+## Examples
+There are several examples of social networks connections in the [android app module](https://github.com/FuckBoilerplate/RxSocialConnect-Android/tree/master/app). 
+
 ## Credits
 * Oauth core authentication: [ScribeJava](https://github.com/scribejava/scribejava)
 
 ## Author
-
 **Víctor Albertos**
 * <https://twitter.com/_victorAlbertos>
 * <https://www.linkedin.com/in/victoralbertos>
