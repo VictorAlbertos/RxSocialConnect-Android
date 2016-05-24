@@ -19,12 +19,17 @@ package org.fuckboilerplate.rx_social_connect.internal.persistence;
 import com.github.scribejava.apis.FacebookApi;
 import com.github.scribejava.apis.TwitterApi;
 import com.github.scribejava.core.model.*;
+import com.google.gson.Gson;
 
+import org.fuckboilerplate.rx_social_connect.JSONConverter;
 import org.junit.ClassRule;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import org.junit.runners.MethodSorters;
+
+import java.io.File;
+import java.io.FileReader;
 
 import rx.Observable;
 import rx.observers.TestSubscriber;
@@ -42,7 +47,7 @@ public class TokenCacheTest {
     @ClassRule public static TemporaryFolder temporaryFolder = new TemporaryFolder();
 
     @Test public void _1_When_Save_Token_And_Retrieve_It_Get_It() {
-        TokenCache.INSTANCE.init(temporaryFolder.getRoot());
+        TokenCache.INSTANCE.init(temporaryFolder.getRoot(), jsonConverter());
 
         TokenCache.INSTANCE.save(TOKEN_KEY, OAUTH1_ACCESS_TOKEN);
 
@@ -55,7 +60,7 @@ public class TokenCacheTest {
     }
 
     @Test public void _2_When_Retrieve_After_Memory_Destroyed_Get_It() {
-        TokenCache.INSTANCE.init(temporaryFolder.getRoot());
+        TokenCache.INSTANCE.init(temporaryFolder.getRoot(), jsonConverter());
 
         TestSubscriber<OAuth1AccessToken> testSubscriber = new TestSubscriber<>();
         Observable<OAuth1AccessToken> oToken = (Observable<OAuth1AccessToken>) TokenCache.INSTANCE.get(TOKEN_KEY, OAuth1AccessToken.class);
@@ -66,7 +71,7 @@ public class TokenCacheTest {
     }
 
     @Test public void _3_When_Evict_And_Retrieve_It_Get_Null() {
-        TokenCache.INSTANCE.init(temporaryFolder.getRoot());
+        TokenCache.INSTANCE.init(temporaryFolder.getRoot(), jsonConverter());
 
         TokenCache.INSTANCE.evict(TOKEN_KEY);
         Observable<OAuth1AccessToken> oToken = (Observable<OAuth1AccessToken>) TokenCache.INSTANCE.get(TOKEN_KEY, OAuth1AccessToken.class);
@@ -74,7 +79,7 @@ public class TokenCacheTest {
     }
 
     @Test public void _4_When_Evict_All_And_Retrieve_It_Get_Null() {
-        TokenCache.INSTANCE.init(temporaryFolder.getRoot());
+        TokenCache.INSTANCE.init(temporaryFolder.getRoot(), jsonConverter());
 
         TokenCache.INSTANCE.save(TOKEN_KEY, OAUTH1_ACCESS_TOKEN);
         TokenCache.INSTANCE.save(TOKEN_KEY_2, OAUTH2_ACCESS_TOKEN);
@@ -101,6 +106,19 @@ public class TokenCacheTest {
 
         oToken2 = (Observable<com.github.scribejava.core.model.OAuth2AccessToken>) TokenCache.INSTANCE.get(TOKEN_KEY_2, OAuth2AccessToken.class);
         assertNull(oToken2);
+    }
+
+    private JSONConverter jsonConverter() {
+        return new JSONConverter() {
+            @Override public <T> T fromJson(File file, Class<T> clazz) throws Exception {
+                T data = new Gson().fromJson(new FileReader(file.getAbsoluteFile()), clazz);
+                return data;
+            }
+
+            @Override public String toJson(Object object) {
+                return new Gson().toJson(object);
+            }
+        };
     }
 
 }

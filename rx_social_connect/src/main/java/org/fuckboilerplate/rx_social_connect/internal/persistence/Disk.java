@@ -17,11 +17,11 @@
 package org.fuckboilerplate.rx_social_connect.internal.persistence;
 
 import com.github.scribejava.core.model.Token;
-import com.google.gson.Gson;
 
-import java.io.BufferedReader;
+import org.fuckboilerplate.rx_social_connect.JSONConverter;
+import org.fuckboilerplate.rx_social_connect.NotJsonConverterProvided;
+
 import java.io.File;
-import java.io.FileReader;
 import java.io.FileWriter;
 
 import rx.Observable;
@@ -29,14 +29,17 @@ import rx.Observable;
 public class Disk<T extends Token> {
     private final File cacheDirectory;
     private static final String NAME_DIR = "RxSocialConnect";
+    private final JSONConverter jsonConverter;
 
-    public Disk(File file) {
+    public Disk(File file, JSONConverter jsonConverter) {
         this.cacheDirectory = new File(file + File.separator + NAME_DIR);
         if (!this.cacheDirectory.exists()) cacheDirectory.mkdir();
+        this.jsonConverter = jsonConverter;
+        if (this.jsonConverter == null) throw new NotJsonConverterProvided();
     }
 
     public void save(String key, T data) {
-        String wrapperJSONSerialized = new Gson().toJson(data);
+        String wrapperJSONSerialized = jsonConverter.toJson(data);
         try {
             File file = new File(cacheDirectory, key);
 
@@ -68,11 +71,7 @@ public class Disk<T extends Token> {
     private T retrieve(String key, Class<T> clazz) {
         try {
             File file = new File(cacheDirectory, key);
-            BufferedReader bufferedReader = new BufferedReader(new FileReader(file.getAbsoluteFile()));
-
-            T data = new Gson().fromJson(bufferedReader, clazz);
-
-            bufferedReader.close();
+            T data = jsonConverter.fromJson(file, clazz);
             return data;
         } catch (Exception ignore) {
             return null;

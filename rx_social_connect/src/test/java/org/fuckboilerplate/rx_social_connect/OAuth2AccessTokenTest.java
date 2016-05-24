@@ -26,8 +26,8 @@ import static org.junit.Assert.assertThat;
 public class OAuth2AccessTokenTest {
 
     @Test public void When_Token_Expires_Then_Expire() throws Exception {
-        Integer expiresInOneSecond = 3;
-        OAuth2AccessToken oAuth2AccessToken = new OAuth2AccessToken(createToken(expiresInOneSecond));
+        Integer expiresInThreeSecond = 3;
+        OAuth2AccessToken oAuth2AccessToken = new OAuth2AccessToken(createToken(expiresInThreeSecond));
 
         waitTime(3500);
 

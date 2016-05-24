@@ -47,9 +47,21 @@ public final class RxSocialConnect {
     /**
      * Register RxSocialConnect calling this method on onCreate android application method.
      */
-    public static void register(Application application) {
+    public static Builder register(Application application) {
         RxActivityResult.register(application);
-        TokenCache.INSTANCE.init(application);
+        return new Builder(application);
+    }
+
+    public static class Builder {
+        private final Application application;
+
+        public Builder(Application application) {
+            this.application = application;
+        }
+
+        public void using(JSONConverter jsonConverter) {
+            TokenCache.INSTANCE.init(application, jsonConverter);
+        }
     }
 
     /**
