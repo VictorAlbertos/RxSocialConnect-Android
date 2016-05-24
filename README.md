@@ -144,8 +144,53 @@ RxSocialConnect.closeConnections()
                 .subscribe(_I ->  showToast("All disconnected"));
 ```
 
+
+### OkHttp interceptors.
+RxSocialConnect can be powered with [OkHttp](https://github.com/square/okhttp) (or [Retrofit](https://github.com/square/retrofit) for that matters) to bypass authentication header configuration when dealing with specific endpoints.
+Using the interceptors provided by RxSocialConnect, it's a 0 configuration process to be able to reach any http resource from any api client (Facebook, Twitter, etc).
+
+First of all, install RxSocialConnectInterceptors library using gradle:
+```gradle
+dependencies {
+    compile 'com.github.VictorAlbertos:RxSocialConnectInterceptors:0.0.1'
+}
+``` 
+
+After you have retrieved a valid token -if you attempt to use these interceptors prior to retrieving a valid token, an [NotActiveTokenFoundException](https://github.com/FuckBoilerplate/RxSocialConnect-Android/blob/master/rx_social_connect/src/main/java/org/fuckboilerplate/rx_social_connect/NotActiveTokenFoundException.java) will be thrown, you can now use [OAuth1Interceptor](https://github.com/VictorAlbertos/RxSocialConnectInterceptors/blob/master/rx_social_connect_interceptors/src/main/java/io/victoralbertos/rx_social_connect_interceptors/OAuth1Interceptor.java) or [OAuth2Interceptor](https://github.com/VictorAlbertos/RxSocialConnectInterceptors/blob/master/rx_social_connect_interceptors/src/main/java/io/victoralbertos/rx_social_connect_interceptors/OAuth2Interceptor.java) classes to bypass the authentication headers configuration, depending on the OAuth version of your social network of interest.   
+
+#### OAuth1Interceptor.
+```java
+OAuth10aService yahooService = //...
+
+OkHttpClient client = new OkHttpClient.Builder()
+                .addInterceptor(new OAuth1Interceptor(yahooService))
+                .build();
+
+//If using retrofit... 
+YahooApiRest yahooApiRest = new Retrofit.Builder()
+        .baseUrl("")
+        .client(client)
+        .build().create(YahooApiRest.class);
+```  
+
+#### OAuth2Interceptor.
+```java
+OkHttpClient client = new OkHttpClient.Builder()
+                .addInterceptor(new OAuth2Interceptor(FacebookApi.class))
+                .build();
+
+//If using retrofit... 
+FacebookApiRest facebookApiRest = new Retrofit.Builder()
+        .baseUrl("")
+        .client(client)
+        .build().create(FacebookApiRest.class);
+```  
+
+Now you are ready to perform any http call against any api in the same way you would do it for no OAuth apis. 
+
 ## Examples
-There are several examples of social networks connections in the [android app module](https://github.com/FuckBoilerplate/RxSocialConnect-Android/tree/master/app). 
+* Social networks connections examples can be found on [android app module](https://github.com/FuckBoilerplate/RxSocialConnect-Android/tree/master/app). 
+* OkHttp interceptors examples can be found on [RxSocialConnectInterceptors repo app module](https://github.com/VictorAlbertos/RxSocialConnectInterceptors/tree/master/app). 
 
 ## Credits
 * Oauth core authentication: [ScribeJava](https://github.com/scribejava/scribejava)
