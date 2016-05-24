@@ -70,7 +70,7 @@ Every feature RxSocialConnect exposes can be accessed from both, an `activity` o
 
 **Limitation:**: Your fragments need to extend from `android.support.v4.app.Fragment` instead of `android.app.Fragment`, otherwise they won't be notified. 
 
-The generic type of the `observable` returned by RxSocialConnect when subscribing to any of its providers is always an instance of [Response](https://github.com/FuckBoilerplate/RxSocialConnect-Android/blob/master/rx_social_connect/src/main/java/org/fuckboilerplate/rx_social_connect/Response.java) class. 
+The generic type of the `observable` returned by RxSocialConnect when subscribing to any of its providers is always an instance of [Response](https://github.com/FuckBoilerplate/RxSocialConnect-Android/blob/master/core/src/main/java/org/fuckboilerplate/rx_social_connect/Response.java) class. 
 
 This instance holds a reference to the current Activity/Fragment, accessible calling `targetUI()` method. Because the original one may be recreated it would be unsafe calling it. Instead, you must call any method/variable of your Activity/Fragment from this instance encapsulated in the `response` instance.
 
@@ -159,13 +159,14 @@ RxSocialConnect can be powered with [OkHttp](https://github.com/square/okhttp) (
 Using the interceptors provided by RxSocialConnect, it's a 0 configuration process to be able to reach any http resource from any api client (Facebook, Twitter, etc).
 
 First of all, install RxSocialConnectInterceptors library using gradle:
+
 ```gradle
 dependencies {
     compile "com.github.FuckBoilerplate.RxSocialConnect-Android:okhttp_interceptors:0.0.7"
 }
 ``` 
 
-After you have retrieved a valid token -if you attempt to use these interceptors prior to retrieving a valid token a [NotActiveTokenFoundException](https://github.com/FuckBoilerplate/RxSocialConnect-Android/blob/master/rx_social_connect/src/main/java/org/fuckboilerplate/rx_social_connect/NotActiveTokenFoundException.java) will be thrown, you can now use [OAuth1Interceptor](https://github.com/VictorAlbertos/RxSocialConnectInterceptors/blob/master/rx_social_connect_interceptors/src/main/java/io/victoralbertos/rx_social_connect_interceptors/OAuth1Interceptor.java) or [OAuth2Interceptor](https://github.com/VictorAlbertos/RxSocialConnectInterceptors/blob/master/rx_social_connect_interceptors/src/main/java/io/victoralbertos/rx_social_connect_interceptors/OAuth2Interceptor.java) classes to bypass the authentication headers configuration, depending on the OAuth version of your social network of interest.   
+After you have retrieved a valid token -if you attempt to use these interceptors prior to retrieving a valid token a [NotActiveTokenFoundException](https://github.com/FuckBoilerplate/RxSocialConnect-Android/blob/master/core/src/main/java/org/fuckboilerplate/rx_social_connect/NotActiveTokenFoundException.java) will be thrown, you can now use [OAuth1Interceptor](https://github.com/FuckBoilerplate/RxSocialConnect-Android/blob/master/okhttp_interceptors/src/main/java/io/victoralbertos/rx_social_connect/OAuth1Interceptor.java) or [OAuth2Interceptor](https://github.com/FuckBoilerplate/RxSocialConnect-Android/blob/master/okhttp_interceptors/src/main/java/io/victoralbertos/rx_social_connect/OAuth2Interceptor.java) classes to bypass the authentication headers configuration, depending on the OAuth version of your social network of interest.   
 
 #### OAuth1Interceptor.
 ```java
@@ -198,8 +199,8 @@ FacebookApiRest facebookApiRest = new Retrofit.Builder()
 Now you are ready to perform any http call against any api in the same way you would do it for no OAuth apis. 
 
 ## Examples
-* Social networks connections examples can be found on [android app module](https://github.com/FuckBoilerplate/RxSocialConnect-Android/tree/master/app). 
-* OkHttp interceptors examples can be found on [RxSocialConnectInterceptors repo app module](https://github.com/VictorAlbertos/RxSocialConnectInterceptors/tree/master/app). 
+* Social networks connections examples can be found [here](https://github.com/FuckBoilerplate/RxSocialConnect-Android/tree/master/app/src/main/java/org/fuckboilerplate/rxsocialconnect/connections). 
+* OkHttp interceptors examples can be found [here](https://github.com/FuckBoilerplate/RxSocialConnect-Android/tree/master/app/src/main/java/org/fuckboilerplate/rxsocialconnect/interceptors). 
 
 ## Credits
 * Oauth core authentication: [ScribeJava](https://github.com/scribejava/scribejava)
