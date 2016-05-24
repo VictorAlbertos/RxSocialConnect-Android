@@ -6,9 +6,9 @@
 
     <fragment
         android:id="@+id/rxSocialConnectFragment"
-        android:name="org.fuckboilerplate.rxsocialconnect.RxSocialConnectFragment"
+        android:name="org.fuckboilerplate.rxsocialconnect.connections.ConnectionsFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:layout="@layout/main" />
+        tools:layout="@layout/connections" />
 
 </LinearLayout>

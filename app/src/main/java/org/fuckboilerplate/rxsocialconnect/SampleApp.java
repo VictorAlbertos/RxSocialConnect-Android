@@ -4,7 +4,7 @@ import android.app.Application;
 
 import org.fuckboilerplate.rx_social_connect.RxSocialConnect;
 
-import io.victoralbertos.rx_social_connect_gson_converter.GsonConverter;
+import io.victoralbertos.rx_social_connect.GsonConverter;
 
 /**
  * Created by victor on 17/05/16.

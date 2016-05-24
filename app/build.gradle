@@ -47,12 +47,18 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:23.3.0'
     compile 'com.android.support:design:23.3.0'
-    compile project(":rx_social_connect")
-    compile project(":rx_social_connect_gson_converter")
+    compile project(':core')
+    compile project(':gson_converter')
+    compile project(':okhttp_interceptors')
 
-    testCompile 'junit:junit:4.12'
+    compile "com.squareup.retrofit2:retrofit:2.0.1"
+    compile "com.squareup.retrofit2:adapter-rxjava:2.0.1"
+    compile "com.squareup.retrofit2:converter-gson:2.0.1"
+    compile 'io.reactivex:rxandroid:1.2.0'
 
     compile 'com.android.support:support-annotations:23.3.0'
+
+    testCompile 'junit:junit:4.12'
 
     androidTestCompile ("com.android.support.test:runner:0.5") {
         exclude module: 'support-annotations'

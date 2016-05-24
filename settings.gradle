@@ -1,1 +1,1 @@
-include ':app', ':rx_social_connect', ':rx_social_connect_gson_converter'
+include ':app', ':core', ':gson_converter', ':okhttp_interceptors'

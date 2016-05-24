@@ -18,6 +18,7 @@ package org.fuckboilerplate.rxsocialconnect;
 
 import android.support.test.rule.ActivityTestRule;
 
+import org.fuckboilerplate.rxsocialconnect.connections.HostActivityFragment;
 import org.junit.Rule;
 
 public class FragmentTest extends RxSocialConnectTest {

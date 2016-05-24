@@ -22,11 +22,19 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".RxSocialConnectActivity"
+            android:name=".interceptors.InterceptorsActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity
-            android:name=".HostActivityFragment"
+            android:name=".connections.ChooseActivityOrFragment"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".connections.ConnectionsActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".connections.HostActivityFragment"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar"/>
     </application>

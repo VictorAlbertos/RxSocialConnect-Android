@@ -18,8 +18,9 @@ package org.fuckboilerplate.rxsocialconnect;
 
 import android.support.test.rule.ActivityTestRule;
 
+import org.fuckboilerplate.rxsocialconnect.connections.ConnectionsActivity;
 import org.junit.Rule;
 
 public class ActivityTest extends RxSocialConnectTest {
-    @Rule public ActivityTestRule<RxSocialConnectActivity> mActivityRule = new ActivityTestRule(RxSocialConnectActivity.class);
+    @Rule public ActivityTestRule<ConnectionsActivity> mActivityRule = new ActivityTestRule(ConnectionsActivity.class);
 }
