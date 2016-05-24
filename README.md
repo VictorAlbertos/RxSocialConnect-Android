@@ -37,7 +37,7 @@ allprojects {
 And add next dependencies in the build.gradle of android app module:
 ```gradle
 dependencies {
-    compile "com.github.FuckBoilerplate:RxSocialConnect-Android:0.0.5"
+    compile "com.github.FuckBoilerplate.RxSocialConnect-Android:core:0.0.7"
     compile "io.reactivex:rxjava:1.1.5"
 }
 ```
@@ -45,14 +45,23 @@ dependencies {
 ## Usage
 Because RxSocialConnect uses RxActivityResult to deal with intent calls, all its requirements and features are inherited too.
 
-Before attempting to use RxSocialConnect, you need to call `RxSocialConnect.register` in your Android `Application` class, supplying as parameter the current instance.
+Before attempting to use RxSocialConnect, you need to call `RxSocialConnect.register` in your Android `Application` class, supplying as parameter the current instance, as long as an implementation of [JSONConverter](https://github.com/FuckBoilerplate/RxSocialConnect-Android/blob/master/core/src/main/java/org/fuckboilerplate/rx_social_connect/JSONConverter.java) interface.
+
+Because RxSocialConnect requires a json converter to save on disk the tokens retrieved, you need to supply an implementation of `JSONConverter` interface, using whatever JSON libary you prefer. Or you can use the built-in implementation based on [gson](https://github.com/google/gson) library. In order to use this [GsonConverter](https://github.com/FuckBoilerplate/RxSocialConnect-Android/blob/master/gson_converter/src/main/java/io/victoralbertos/rx_social_connect/GsonConverter.java) class, you need to add the next dependency to gradle:
+
+```gradle
+dependencies {
+    compile "com.github.FuckBoilerplate.RxSocialConnect-Android:gson_converter:0.0.7"
+}
+```
+
         
 ```java
 public class SampleApp extends Application {
 
     @Override public void onCreate() {
         super.onCreate();
-        RxSocialConnect.register(this);
+        RxSocialConnect.register(this).using(GsonConverter.create());
     }
 }
 ```
@@ -152,7 +161,7 @@ Using the interceptors provided by RxSocialConnect, it's a 0 configuration proce
 First of all, install RxSocialConnectInterceptors library using gradle:
 ```gradle
 dependencies {
-    compile 'com.github.VictorAlbertos:RxSocialConnectInterceptors:0.0.1'
+    compile "com.github.FuckBoilerplate.RxSocialConnect-Android:okhttp_interceptors:0.0.7"
 }
 ``` 
 
