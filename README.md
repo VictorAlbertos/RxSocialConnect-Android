@@ -37,7 +37,7 @@ allprojects {
 And add next dependencies in the build.gradle of android app module:
 ```gradle
 dependencies {
-    compile "com.github.FuckBoilerplate.RxSocialConnect-Android:core:0.0.7"
+    compile "com.github.FuckBoilerplate.RxSocialConnect-Android:core:0.0.8"
     compile "io.reactivex:rxjava:1.1.5"
 }
 ```
