@@ -36,13 +36,14 @@ import org.junit.runners.MethodSorters;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.web.sugar.Web.onWebView;
 import static android.support.test.espresso.web.webdriver.DriverAtoms.findElement;
 import static android.support.test.espresso.web.webdriver.DriverAtoms.webClick;
 
 /**
- * Run the test uninstalling the app previously and removing permissions for the app from every facebook user profile.
+ * Remove permissions for the app from facebook user profile before to run the test.
  */
 @RunWith(AndroidJUnit4.class)
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
@@ -96,6 +97,12 @@ public abstract class RxSocialConnectTest {
         onView(withId(R.id.tv_token)).check(matches(shouldBeEmpty(true)));
     }
 
+    @Test public void _a6_Facebook_Does_Not_Store_Cookies() {
+        onView(withId(R.id.bt_facebook)).perform(click());
+        waitTime();
+        onView(withId(R.id.webview)).check(matches(isDisplayed()));
+    }
+
     @Test public void _b1_Connect_With_Google() {
         onView(withId(R.id.tv_token)).check(matches(shouldBeEmpty(true)));
 
@@ -147,6 +154,12 @@ public abstract class RxSocialConnectTest {
         onView(withId(R.id.tv_token)).check(matches(shouldBeEmpty(true)));
     }
 
+    @Test public void _b6_Google_Does_Not_Store_Cookies() {
+        onView(withId(R.id.bt_google)).perform(click());
+        waitTime();
+        onView(withId(R.id.webview)).check(matches(isDisplayed()));
+    }
+
     @Test public void _d1_Connect_With_LinkedIn() {
         onView(withId(R.id.tv_token)).check(matches(shouldBeEmpty(true)));
 
@@ -191,6 +204,12 @@ public abstract class RxSocialConnectTest {
         onView(withId(R.id.bt_linkedin_get_token)).perform(click());
         waitTime();
         onView(withId(R.id.tv_token)).check(matches(shouldBeEmpty(true)));
+    }
+
+    @Test public void _d6_LinkedIn_Does_Not_Store_Cookies() {
+        onView(withId(R.id.bt_linkedin)).perform(click());
+        waitTime();
+        onView(withId(R.id.webview)).check(matches(isDisplayed()));
     }
 
     @Test public void _e1_Connect_With_Yahoo() {
@@ -249,6 +268,12 @@ public abstract class RxSocialConnectTest {
         onView(withId(R.id.bt_yahoo_get_token)).perform(click());
         waitTime();
         onView(withId(R.id.tv_token)).check(matches(shouldBeEmpty(true)));
+    }
+
+    @Test public void _e6_Yahoo_Does_Not_Store_Cookies() {
+        onView(withId(R.id.bt_yahoo)).perform(click());
+        waitTime();
+        onView(withId(R.id.webview)).check(matches(isDisplayed()));
     }
 
 /*    @Test public void Connect_With_Twitter() {
