@@ -18,8 +18,11 @@ package org.fuckboilerplate.rx_social_connect.internal;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.webkit.CookieManager;
+import android.webkit.CookieSyncManager;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -43,6 +46,8 @@ public class ActivityConnect extends Activity {
 
     protected void initWebView() {
         final WebView webView = (WebView) findViewById(R.id.webview);
+        clearCookies(webView);
+
         webView.setWebViewClient(new WebViewClient() {
             @Override public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 if (!url.startsWith(service.callbackUrl())) return super.shouldOverrideUrlLoading(view, url);
@@ -81,6 +86,27 @@ public class ActivityConnect extends Activity {
                 webView.loadUrl(url);
             }
         });
+    }
+
+    @SuppressWarnings("deprecation")
+    private void clearCookies(WebView webView) {
+        webView.clearCache(true);
+        webView.clearHistory();
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
+            CookieManager.getInstance().removeAllCookies(null);
+            CookieManager.getInstance().flush();
+        } else {
+            CookieSyncManager cookieSyncManager = CookieSyncManager.createInstance(this);
+            cookieSyncManager.startSync();
+
+            CookieManager cookieManager = CookieManager.getInstance();
+            cookieManager.removeAllCookie();
+            cookieManager.removeSessionCookie();
+
+            cookieSyncManager.stopSync();
+            cookieSyncManager.sync();
+        }
     }
 
     private void finishWithError(Throwable error) {
