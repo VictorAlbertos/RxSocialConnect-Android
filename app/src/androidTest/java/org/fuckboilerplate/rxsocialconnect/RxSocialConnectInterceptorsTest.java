@@ -26,7 +26,7 @@ import static android.support.test.espresso.web.webdriver.DriverAtoms.findElemen
 import static android.support.test.espresso.web.webdriver.DriverAtoms.webClick;
 
 /**
- * To run the test uninstall the app previously and revoke permissions app from Facebook user profile.
+ * To run the test first revoke permissions app from Facebook user profile.
  * Also, be aware that running these test will change the token value, so the unit tests of rx_social_connect_interceptors
  * related with yahoo and facebook will fail because the token will not longer be valid. So you need to update the token value
  * in the appropriate files after running this test.
