@@ -202,6 +202,13 @@ Now you are ready to perform any http call against any api in the same way you w
 * Social networks connections examples can be found [here](https://github.com/FuckBoilerplate/RxSocialConnect-Android/tree/master/app/src/main/java/org/fuckboilerplate/rxsocialconnect/connections). 
 * OkHttp interceptors examples can be found [here](https://github.com/FuckBoilerplate/RxSocialConnect-Android/tree/master/app/src/main/java/org/fuckboilerplate/rxsocialconnect/interceptors). 
 
+## Proguard
+```
+-dontwarn javax.xml.bind.DatatypeConverter
+-dontwarn org.apache.commons.codec.**
+-dontwarn com.ning.http.client.**
+```
+
 ## Credits
 * Oauth core authentication: [ScribeJava](https://github.com/scribejava/scribejava)
 
