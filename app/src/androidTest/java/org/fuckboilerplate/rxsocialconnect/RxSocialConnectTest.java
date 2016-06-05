@@ -177,6 +177,7 @@ public abstract class RxSocialConnectTest {
                 .perform(webClick());
 
         waitTime();
+        waitTime();
         onView(withId(R.id.tv_token)).check(matches(shouldBeEmpty(false)));
     }
 
