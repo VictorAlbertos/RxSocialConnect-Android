@@ -16,7 +16,7 @@ RxSocialConnect.with(fragmentOrActivity, facebookService)
 ## Features:
 
 * Webview implementation to handle the sequent steps of oauth process.
-* Storage of tokens locally and encrypted
+* Storage of tokens encrypted locally 
 * Automatic refreshing tokens taking care of expiration date. 
 * I/O operations performed on secondary threads and automatic sync with user interface on the main thread, thanks to [RxAndroid](https://github.com/ReactiveX/RxAndroid)  
 * Mayor social network supported, more than 16 providers; including Facebook, Twitter, GooglePlus, LinkedIn and so on. Indeed, it supports as many providers as [ScribeJava](https://github.com/scribejava/scribejava/tree/master/scribejava-apis/src/test/java/com/github/scribejava/apis/examples) does, because RxSocialConnect is a reactive-android wrapper around it.
