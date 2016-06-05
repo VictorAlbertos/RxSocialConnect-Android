@@ -16,7 +16,7 @@ RxSocialConnect.with(fragmentOrActivity, facebookService)
 ## Features:
 
 * Webview implementation to handle the sequent steps of oauth process.
-* Storage tokens locally.
+* Storage of tokens locally and encrypted
 * Automatic refreshing tokens taking care of expiration date. 
 * I/O operations performed on secondary threads and automatic sync with user interface on the main thread, thanks to [RxAndroid](https://github.com/ReactiveX/RxAndroid)  
 * Mayor social network supported, more than 16 providers; including Facebook, Twitter, GooglePlus, LinkedIn and so on. Indeed, it supports as many providers as [ScribeJava](https://github.com/scribejava/scribejava/tree/master/scribejava-apis/src/test/java/com/github/scribejava/apis/examples) does, because RxSocialConnect is a reactive-android wrapper around it.
@@ -45,7 +45,7 @@ dependencies {
 ## Usage
 Because RxSocialConnect uses RxActivityResult to deal with intent calls, all its requirements and features are inherited too.
 
-Before attempting to use RxSocialConnect, you need to call `RxSocialConnect.register` in your Android `Application` class, supplying as parameter the current instance, as long as an implementation of [JSONConverter](https://github.com/FuckBoilerplate/RxSocialConnect-Android/blob/master/core/src/main/java/org/fuckboilerplate/rx_social_connect/JSONConverter.java) interface.
+Before attempting to use RxSocialConnect, you need to call `RxSocialConnect.register` in your Android `Application` class, supplying as parameter the current instance and an encryption key in order to save the tokens on disk encrypted, as long as an implementation of [JSONConverter](https://github.com/FuckBoilerplate/RxSocialConnect-Android/blob/master/core/src/main/java/org/fuckboilerplate/rx_social_connect/JSONConverter.java) interface.
 
 Because RxSocialConnect requires a json converter to save on disk the tokens retrieved, you need to supply an implementation of `JSONConverter` interface, using whatever JSON libary you prefer. Or you can use the built-in implementation based on [gson](https://github.com/google/gson) library. In order to use this [GsonConverter](https://github.com/FuckBoilerplate/RxSocialConnect-Android/blob/master/gson_converter/src/main/java/io/victoralbertos/rx_social_connect/GsonConverter.java) class, you need to add the next dependency to gradle:
 
@@ -61,7 +61,9 @@ public class SampleApp extends Application {
 
     @Override public void onCreate() {
         super.onCreate();
-        RxSocialConnect.register(this).using(GsonConverter.create());
+        
+        RxSocialConnect.register(this, "myEncryptionKey")
+            .using(GsonConverter.create());
     }
 }
 ```

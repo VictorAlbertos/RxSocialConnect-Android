@@ -47,7 +47,7 @@ public class TokenCacheTest {
     @ClassRule public static TemporaryFolder temporaryFolder = new TemporaryFolder();
 
     @Test public void _1_When_Save_Token_And_Retrieve_It_Get_It() {
-        TokenCache.INSTANCE.init(temporaryFolder.getRoot(), jsonConverter());
+        TokenCache.INSTANCE.init(temporaryFolder.getRoot(), "key", jsonConverter());
 
         TokenCache.INSTANCE.save(TOKEN_KEY, OAUTH1_ACCESS_TOKEN);
 
@@ -60,7 +60,7 @@ public class TokenCacheTest {
     }
 
     @Test public void _2_When_Retrieve_After_Memory_Destroyed_Get_It() {
-        TokenCache.INSTANCE.init(temporaryFolder.getRoot(), jsonConverter());
+        TokenCache.INSTANCE.init(temporaryFolder.getRoot(), "key", jsonConverter());
 
         TestSubscriber<OAuth1AccessToken> testSubscriber = new TestSubscriber<>();
         Observable<OAuth1AccessToken> oToken = (Observable<OAuth1AccessToken>) TokenCache.INSTANCE.get(TOKEN_KEY, OAuth1AccessToken.class);
@@ -71,7 +71,7 @@ public class TokenCacheTest {
     }
 
     @Test public void _3_When_Evict_And_Retrieve_It_Get_Null() {
-        TokenCache.INSTANCE.init(temporaryFolder.getRoot(), jsonConverter());
+        TokenCache.INSTANCE.init(temporaryFolder.getRoot(), "key", jsonConverter());
 
         TokenCache.INSTANCE.evict(TOKEN_KEY);
         Observable<OAuth1AccessToken> oToken = (Observable<OAuth1AccessToken>) TokenCache.INSTANCE.get(TOKEN_KEY, OAuth1AccessToken.class);
@@ -79,7 +79,7 @@ public class TokenCacheTest {
     }
 
     @Test public void _4_When_Evict_All_And_Retrieve_It_Get_Null() {
-        TokenCache.INSTANCE.init(temporaryFolder.getRoot(), jsonConverter());
+        TokenCache.INSTANCE.init(temporaryFolder.getRoot(), "key", jsonConverter());
 
         TokenCache.INSTANCE.save(TOKEN_KEY, OAUTH1_ACCESS_TOKEN);
         TokenCache.INSTANCE.save(TOKEN_KEY_2, OAUTH2_ACCESS_TOKEN);

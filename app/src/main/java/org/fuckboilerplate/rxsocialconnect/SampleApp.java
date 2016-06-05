@@ -15,7 +15,7 @@ public class SampleApp extends Application {
         super.onCreate();
 
         RxSocialConnect
-                .register(this)
+                .register(this, "myEncryptionKey")
                 .using(GsonConverter.create());
     }
 }

@@ -44,23 +44,28 @@ import rx_activity_result.Result;
 import rx_activity_result.RxActivityResult;
 
 public final class RxSocialConnect {
+    private static final String ERROR_ENCRYPTION_KEY_IS_NULL = "Error encryption key must not be null";
+
     /**
      * Register RxSocialConnect calling this method on onCreate android application method.
      */
-    public static Builder register(Application application) {
+    public static Builder register(Application application, String encryptionKey) {
+        if (encryptionKey == null) throw new RuntimeException(ERROR_ENCRYPTION_KEY_IS_NULL);
         RxActivityResult.register(application);
-        return new Builder(application);
+        return new Builder(application, encryptionKey);
     }
 
     public static class Builder {
         private final Application application;
+        private final String encryptionKey;
 
-        public Builder(Application application) {
+        public Builder(Application application, String encryptionKey) {
             this.application = application;
+            this.encryptionKey = encryptionKey;
         }
 
         public void using(JSONConverter jsonConverter) {
-            TokenCache.INSTANCE.init(application, jsonConverter);
+            TokenCache.INSTANCE.init(application, encryptionKey, jsonConverter);
         }
     }
 
