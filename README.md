@@ -164,7 +164,7 @@ First of all, install RxSocialConnectInterceptors library using gradle:
 
 ```gradle
 dependencies {
-    compile "com.github.FuckBoilerplate.RxSocialConnect-Android:okhttp_interceptors:0.0.7"
+    compile "com.github.FuckBoilerplate.RxSocialConnect-Android:okhttp_interceptors:0.0.9"
 }
 ``` 
 
