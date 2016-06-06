@@ -51,7 +51,7 @@ Because RxSocialConnect requires a json converter to save on disk the tokens ret
 
 ```gradle
 dependencies {
-    compile "com.github.FuckBoilerplate.RxSocialConnect-Android:gson_converter:0.0.7"
+    compile "com.github.FuckBoilerplate.RxSocialConnect-Android:gson_converter:0.0.9"
 }
 ```
 
