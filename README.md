@@ -37,7 +37,7 @@ allprojects {
 And add next dependencies in the build.gradle of android app module:
 ```gradle
 dependencies {
-    compile "com.github.FuckBoilerplate.RxSocialConnect-Android:core:0.0.9"
+    compile "com.github.FuckBoilerplate.RxSocialConnect-Android:core:0.1.0"
     compile "io.reactivex:rxjava:1.1.5"
 }
 ```
@@ -51,7 +51,7 @@ Because RxSocialConnect requires a json converter to save on disk the tokens ret
 
 ```gradle
 dependencies {
-    compile "com.github.FuckBoilerplate.RxSocialConnect-Android:gson_converter:0.0.9"
+    compile "com.github.FuckBoilerplate.RxSocialConnect-Android:gson_converter:0.1.0"
 }
 ```
 
@@ -164,7 +164,7 @@ First of all, install RxSocialConnectInterceptors library using gradle:
 
 ```gradle
 dependencies {
-    compile "com.github.FuckBoilerplate.RxSocialConnect-Android:okhttp_interceptors:0.0.9"
+    compile "com.github.FuckBoilerplate.RxSocialConnect-Android:okhttp_interceptors:0.1.0"
 }
 ``` 
 
