@@ -18,9 +18,9 @@ package org.fuckboilerplate.rx_social_connect.internal.services;
 
 import android.net.Uri;
 
-import com.github.scribejava.core.model.OAuth1AccessToken;
 import com.github.scribejava.core.model.OAuth1RequestToken;
 import com.github.scribejava.core.oauth.OAuth10aService;
+import org.fuckboilerplate.rx_social_connect.internal.persistence.OAuth1AccessToken;
 
 public final class OAuth1Service extends Service<OAuth1AccessToken, OAuth10aService> {
 
@@ -35,7 +35,9 @@ public final class OAuth1Service extends Service<OAuth1AccessToken, OAuth10aServ
         if (error != null && !error.isEmpty()) throw new RuntimeException(error);
 
         String verifier = uri.getQueryParameter("oauth_verifier");
-        return service.getAccessToken(oAuth1RequestToken, verifier);
+        return new OAuth1AccessToken(
+            service.getAccessToken(oAuth1RequestToken, verifier)
+        );
     }
 
     private OAuth1RequestToken oAuth1RequestToken;

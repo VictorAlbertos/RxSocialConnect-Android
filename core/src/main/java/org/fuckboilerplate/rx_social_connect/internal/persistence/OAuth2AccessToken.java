@@ -19,6 +19,14 @@ package org.fuckboilerplate.rx_social_connect.internal.persistence;
 public final class OAuth2AccessToken extends com.github.scribejava.core.model.OAuth2AccessToken {
     private final long expirationDate;
 
+    /**
+     * Exists just to make happy some json providers
+     */
+    public OAuth2AccessToken() {
+        super("stub", "stub", 0, "stub", "stub", "stub");
+        expirationDate = 0;
+    }
+
     public OAuth2AccessToken(com.github.scribejava.core.model.OAuth2AccessToken oAuth2AccessToken) {
         super(oAuth2AccessToken.getAccessToken(), oAuth2AccessToken.getTokenType(), oAuth2AccessToken.getExpiresIn(),
                 oAuth2AccessToken.getRefreshToken(), oAuth2AccessToken.getScope(), oAuth2AccessToken.getRawResponse());

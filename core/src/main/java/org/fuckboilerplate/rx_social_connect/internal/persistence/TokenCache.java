@@ -21,8 +21,7 @@ import android.support.annotation.VisibleForTesting;
 
 import com.github.scribejava.core.model.Token;
 
-import org.fuckboilerplate.rx_social_connect.JSONConverter;
-
+import io.victoralbertos.jolyglot.Jolyglot;
 import java.io.File;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -35,13 +34,13 @@ public enum TokenCache {
     private Disk disk;
     private ConcurrentMap<String, Observable<? extends Token>> memory;
 
-    public void init(Context context, String encryptionKey, JSONConverter jsonConverter) {
-        disk = new Disk(context.getFilesDir(), encryptionKey, jsonConverter);
+    public void init(Context context, String encryptionKey, Jolyglot jolyglot) {
+        disk = new Disk(context.getFilesDir(), encryptionKey, jolyglot);
         memory = new ConcurrentHashMap();
     }
 
-    @VisibleForTesting void init(File file, String encryptionKey, JSONConverter jsonConverter) {
-        disk = new Disk(file, encryptionKey, jsonConverter);
+    @VisibleForTesting void init(File file, String encryptionKey, Jolyglot jolyglot) {
+        disk = new Disk(file, encryptionKey, jolyglot);
         memory = new ConcurrentHashMap();
     }
 

@@ -20,23 +20,21 @@ import android.app.Activity;
 import android.app.Application;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
-
 import com.github.scribejava.core.builder.api.BaseApi;
 import com.github.scribejava.core.builder.api.DefaultApi10a;
 import com.github.scribejava.core.builder.api.DefaultApi20;
-import com.github.scribejava.core.model.OAuth1AccessToken;
 import com.github.scribejava.core.model.Token;
 import com.github.scribejava.core.oauth.OAuth10aService;
 import com.github.scribejava.core.oauth.OAuth20Service;
 import com.github.scribejava.core.oauth.OAuthService;
-
+import io.victoralbertos.jolyglot.Jolyglot;
 import org.fuckboilerplate.rx_social_connect.internal.ActivityConnect;
+import org.fuckboilerplate.rx_social_connect.internal.persistence.OAuth1AccessToken;
 import org.fuckboilerplate.rx_social_connect.internal.persistence.OAuth2AccessToken;
 import org.fuckboilerplate.rx_social_connect.internal.persistence.TokenCache;
 import org.fuckboilerplate.rx_social_connect.internal.services.OAuth1Service;
 import org.fuckboilerplate.rx_social_connect.internal.services.OAuth2Service;
 import org.fuckboilerplate.rx_social_connect.internal.services.Service;
-
 import rx.Observable;
 import rx.functions.Func0;
 import rx.functions.Func1;
@@ -64,8 +62,8 @@ public final class RxSocialConnect {
             this.encryptionKey = encryptionKey;
         }
 
-        public void using(JSONConverter jsonConverter) {
-            TokenCache.INSTANCE.init(application, encryptionKey, jsonConverter);
+        public void using(Jolyglot jolyglot) {
+            TokenCache.INSTANCE.init(application, encryptionKey, jolyglot);
         }
     }
 
@@ -75,13 +73,13 @@ public final class RxSocialConnect {
      * @param oAuth10aService the oauth1 service containing the provider as long as the provider credentials.
      * @param <A> the activity calling
      * @return a response instance holding the OAuth1AccessToken and the current valid activity instance.
-     * @see OAuth1AccessToken
+     * @see com.github.scribejava.core.model.OAuth1AccessToken
      */
-    public static <A extends Activity> Observable<Response<A, OAuth1AccessToken>> with(A activity, OAuth10aService oAuth10aService) {
+    public static <A extends Activity> Observable<Response<A, com.github.scribejava.core.model.OAuth1AccessToken>> with(A activity, OAuth10aService oAuth10aService) {
         return startActivity(activity, new OAuth1Service(oAuth10aService),
                 oAuth10aService.getApi().getClass().getSimpleName(), OAuth1AccessToken.class)
-                .map(new Func1<Response<Object, OAuth1AccessToken>, Response<A, OAuth1AccessToken>>() {
-                    @Override public Response<A, OAuth1AccessToken> call(Response<Object, OAuth1AccessToken> response) {
+                .map(new Func1<Response<Object, OAuth1AccessToken>, Response<A, com.github.scribejava.core.model.OAuth1AccessToken>>() {
+                    @Override public Response<A, com.github.scribejava.core.model.OAuth1AccessToken> call(Response<Object, OAuth1AccessToken> response) {
                         return new Response(response.targetUI(), response.token());
                     }
                 });
@@ -111,13 +109,13 @@ public final class RxSocialConnect {
      * @param oAuth10aService the oauth1 service containing the provider as long as the provider credentials.
      * @param <F> the fragment calling
      * @return a response instance holding the OAuth1AccessToken and the current valid activity fragment.
-     * @see OAuth1AccessToken
+     * @see com.github.scribejava.core.model.OAuth1AccessToken
      */
-    public static <F extends Fragment> Observable<Response<F, OAuth1AccessToken>> with(F fragment, OAuth10aService oAuth10aService) {
+    public static <F extends Fragment> Observable<Response<F, com.github.scribejava.core.model.OAuth1AccessToken>> with(F fragment, OAuth10aService oAuth10aService) {
         return startActivity(fragment, new OAuth1Service(oAuth10aService),
                 oAuth10aService.getApi().getClass().getSimpleName(), OAuth1AccessToken.class)
-                .map(new Func1<Response<Object, OAuth1AccessToken>, Response<F, OAuth1AccessToken>>() {
-                    @Override public Response<F, OAuth1AccessToken> call(Response<Object, OAuth1AccessToken> response) {
+                .map(new Func1<Response<Object, OAuth1AccessToken>, Response<F, com.github.scribejava.core.model.OAuth1AccessToken>>() {
+                    @Override public Response<F, com.github.scribejava.core.model.OAuth1AccessToken> call(Response<Object, OAuth1AccessToken> response) {
                         return new Response(response.targetUI(), response.token());
                     }
                 });
@@ -172,13 +170,19 @@ public final class RxSocialConnect {
      * @param classApi a class provider which extends from DefaultApi10a. The same one used to build the OAuthService.
      * @return observable containing an OAuth1AccessToken or if not token cached observable which throws NotTokenFoundException
      */
-    public static Observable<OAuth1AccessToken> getTokenOAuth1(final Class<? extends DefaultApi10a> classApi) {
-        return Observable.defer(new Func0<Observable<OAuth1AccessToken>>() {
-            @Override public Observable<OAuth1AccessToken> call() {
+    public static Observable<com.github.scribejava.core.model.OAuth1AccessToken> getTokenOAuth1(final Class<? extends DefaultApi10a> classApi) {
+        return Observable.defer(new Func0<Observable<com.github.scribejava.core.model.OAuth1AccessToken>>() {
+            @Override public Observable<com.github.scribejava.core.model.OAuth1AccessToken> call() {
                 String keyToken = classApi.getSimpleName();
 
                 Observable<OAuth1AccessToken> token = (Observable<OAuth1AccessToken>) TokenCache.INSTANCE.get(keyToken, OAuth1AccessToken.class);
-                if (token != null) return token;
+                if (token != null) {
+                    return token.map(new Func1<OAuth1AccessToken, com.github.scribejava.core.model.OAuth1AccessToken>() {
+                        @Override public com.github.scribejava.core.model.OAuth1AccessToken call(OAuth1AccessToken token) {
+                            return token.toOAuth1AccessTokenScribe();
+                        }
+                    });
+                }
 
                 return Observable.error(new NotActiveTokenFoundException());
             }
