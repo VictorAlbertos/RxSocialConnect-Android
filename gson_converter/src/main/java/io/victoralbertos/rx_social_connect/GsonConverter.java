@@ -2,8 +2,6 @@ package io.victoralbertos.rx_social_connect;
 
 import com.google.gson.Gson;
 
-import org.fuckboilerplate.rx_social_connect.JSONConverter;
-
 import java.io.File;
 import java.io.FileReader;
 

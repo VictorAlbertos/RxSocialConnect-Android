@@ -34,7 +34,9 @@ dependencies {
     compile 'io.reactivex:rxandroid:1.2.0'
 
     compile 'com.github.VictorAlbertos:RxActivityResult:0.3.4'
-    testCompile 'com.google.code.gson:gson:2.6.2'
+    compile 'com.github.VictorAlbertos.Jolyglot:api:0.0.2'
+
+    testCompile 'com.github.VictorAlbertos.Jolyglot:gson:0.0.2'
 }
 
 // build a jar with source files

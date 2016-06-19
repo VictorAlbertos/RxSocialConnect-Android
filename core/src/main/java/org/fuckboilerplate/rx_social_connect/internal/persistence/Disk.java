@@ -18,8 +18,7 @@ package org.fuckboilerplate.rx_social_connect.internal.persistence;
 
 import com.github.scribejava.core.model.Token;
 
-import org.fuckboilerplate.rx_social_connect.JSONConverter;
-import org.fuckboilerplate.rx_social_connect.NotJsonConverterProvided;
+import io.victoralbertos.jolyglot.Jolyglot;
 import org.fuckboilerplate.rx_social_connect.internal.encryption.BuiltInEncryptor;
 import org.fuckboilerplate.rx_social_connect.internal.encryption.FileEncryptor;
 
@@ -32,21 +31,20 @@ import rx.Observable;
 public class Disk<T extends Token> {
     private final File cacheDirectory;
     private static final String NAME_DIR = "RxSocialConnect";
-    private final JSONConverter jsonConverter;
+    private final Jolyglot jolyglot;
     private final String encryptionKey;
     private final FileEncryptor fileEncryptor;
 
-    public Disk(File file, String encryptionKey, JSONConverter jsonConverter) {
+    public Disk(File file, String encryptionKey, Jolyglot jolyglot) {
         this.fileEncryptor = new FileEncryptor(new BuiltInEncryptor());
         this.encryptionKey = encryptionKey;
         this.cacheDirectory = new File(file + File.separator + NAME_DIR);
         if (!this.cacheDirectory.exists()) cacheDirectory.mkdir();
-        this.jsonConverter = jsonConverter;
-        if (this.jsonConverter == null) throw new NotJsonConverterProvided();
+        this.jolyglot = jolyglot;
     }
 
     public void save(String key, T data) {
-        String wrapperJSONSerialized = jsonConverter.toJson(data);
+        String wrapperJSONSerialized = jolyglot.toJson(data);
         FileWriter fileWriter = null;
 
         try {
@@ -94,7 +92,7 @@ public class Disk<T extends Token> {
         file = fileEncryptor.decrypt(encryptionKey, file);
 
         try {
-            T data = jsonConverter.fromJson(file, clazz);
+            T data = jolyglot.fromJson(file, clazz);
             file.delete();
 
             return data;

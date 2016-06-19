@@ -1,1 +1,1 @@
-include ':app', ':core', ':gson_converter', ':okhttp_interceptors'
+include ':app', ':core', ':okhttp_interceptors'
