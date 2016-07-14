@@ -228,6 +228,6 @@ Now you are ready to perform any http call against any api in the same way you w
 
 ## Another author's libraries using RxJava:
 * [RxCache](https://github.com/VictorAlbertos/RxCache): Reactive caching library for Android and Java. 
-* [RxGcm](https://github.com/VictorAlbertos/RxGcm): RxJava extension for Gcm which acts as an architectural approach to easily satisfy the requirements of an android app when dealing with push notifications.
+* [RxFcm](https://github.com/VictorAlbertos/RxFcm): RxJava extension for Android Firebase Cloud Messaging (aka fcm).
 * [RxPaparazzo](https://github.com/FuckBoilerplate/RxPaparazzo): RxJava extension for Android to take images using camera and gallery.
 * [RxActivityResult](https://github.com/VictorAlbertos/RxActivityResult): A reactive-tiny-badass-vindictive library to break with the OnActivityResult implementation as it breaks the observables chain. 
