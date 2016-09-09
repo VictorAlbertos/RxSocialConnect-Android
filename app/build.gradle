@@ -53,8 +53,8 @@ dependencies {
     compile "com.squareup.retrofit2:retrofit:2.0.1"
     compile "com.squareup.retrofit2:adapter-rxjava:2.0.1"
     compile "com.squareup.retrofit2:converter-gson:2.0.1"
-    compile "com.github.VictorAlbertos.Jolyglot:gson:0.0.2"
-    compile 'io.reactivex:rxandroid:1.2.0'
+    compile "com.github.VictorAlbertos.Jolyglot:gson:0.0.3"
+    compile 'io.reactivex:rxandroid:1.2.1'
 
     compile 'com.android.support:support-annotations:23.3.0'
 
