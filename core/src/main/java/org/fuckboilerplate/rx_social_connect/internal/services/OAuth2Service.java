@@ -35,7 +35,8 @@ public final class OAuth2Service extends Service<OAuth2AccessToken, OAuth20Servi
         if (error != null && !error.isEmpty()) throw new RuntimeException(error);
 
         String code = uri.getQueryParameter("code");
-        return new OAuth2AccessToken(service.getAccessToken(code));
+        com.github.scribejava.core.model.OAuth2AccessToken accessToken = service.getAccessToken(code);
+        return new OAuth2AccessToken(accessToken);
     }
 
     @Override protected String authUrl() throws Exception {

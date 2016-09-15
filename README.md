@@ -37,7 +37,7 @@ allprojects {
 And add next dependencies in the build.gradle of android app module:
 ```gradle
 dependencies {
-    compile 'com.github.VictorAlbertos.RxSocialConnect-Android:core:0.1.3'
+    compile 'com.github.VictorAlbertos.RxSocialConnect-Android:core:0.1.4'
     compile "io.reactivex:rxjava:1.1.10"
 }
 ```
@@ -52,13 +52,13 @@ Because RxSocialConnect uses internally [Jolyglot](https://github.com/VictorAlbe
 ```gradle
 dependencies {
     // To use Gson 
-    compile 'com.github.VictorAlbertos.Jolyglot:gson:0.0.1'
+    compile 'com.github.VictorAlbertos.Jolyglot:gson:0.0.3'
     
     // To use Jackson
-    compile 'com.github.VictorAlbertos.Jolyglot:jackson:0.0.1'
+    compile 'com.github.VictorAlbertos.Jolyglot:jackson:0.0.3'
     
     // To use Moshi
-    compile 'com.github.VictorAlbertos.Jolyglot:moshi:0.0.1'
+    compile 'com.github.VictorAlbertos.Jolyglot:moshi:0.0.3'
 }
 ```
         
@@ -170,7 +170,7 @@ First of all, install RxSocialConnectInterceptors library using gradle:
 
 ```gradle
 dependencies {
-    compile 'com.github.VictorAlbertos.RxSocialConnect-Android:okhttp_interceptors:0.1.3'
+    compile 'com.github.VictorAlbertos.RxSocialConnect-Android:okhttp_interceptors:0.1.4'
 }
 ``` 
 

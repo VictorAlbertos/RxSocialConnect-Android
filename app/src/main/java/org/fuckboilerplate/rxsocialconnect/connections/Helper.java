@@ -8,6 +8,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.scribejava.apis.FacebookApi;
+import com.github.scribejava.apis.GitHubApi;
 import com.github.scribejava.apis.GoogleApi20;
 import com.github.scribejava.apis.LinkedInApi20;
 import com.github.scribejava.apis.TwitterApi;
@@ -95,6 +96,18 @@ public class Helper {
                 .apiSecret(clientSecret)
                 .callback(callbackUrl)
                 .build(YahooApi.instance());
+    }
+
+    OAuth20Service githubService() {
+        String appId = "725a59980165855cc986";
+        String appSecret = "38733b4bf1c8646af86e38797f345847a0b61388";
+        String callbackUrl = "http://victoralbertos.com/";
+
+        return new ServiceBuilder()
+            .apiKey(appId)
+            .apiSecret(appSecret)
+            .callback(callbackUrl)
+            .build(GitHubApi.instance());
     }
 
     void showTokenOAuth1(Class<? extends DefaultApi10a> clazz) {

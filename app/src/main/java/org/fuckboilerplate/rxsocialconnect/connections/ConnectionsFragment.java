@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.github.scribejava.apis.FacebookApi;
+import com.github.scribejava.apis.GitHubApi;
 import com.github.scribejava.apis.GoogleApi20;
 import com.github.scribejava.apis.LinkedInApi20;
 import com.github.scribejava.apis.TwitterApi;
@@ -33,6 +34,7 @@ public class ConnectionsFragment extends Fragment {
         setUpGoogle();
         setUpLinkedIn();
         setUpYahoo();
+        setUpGithub();
 
         findViewById(R.id.bt_all_disconnect).setOnClickListener(v -> helper.closeAllConnection());
     }
@@ -95,6 +97,18 @@ public class ConnectionsFragment extends Fragment {
         findViewById(R.id.bt_yahoo_get_token).setOnClickListener(v -> helper.showTokenOAuth1(YahooApi.class));
 
         findViewById(R.id.bt_yahoo_disconnect).setOnClickListener(v -> helper.closeConnection(YahooApi.class));
+    }
+
+    private void setUpGithub() {
+        findViewById(R.id.bt_github).setOnClickListener(v -> {
+            RxSocialConnect.with(ConnectionsFragment.this, helper.githubService())
+                .subscribe(response -> response.targetUI().helper.showResponse(response.token()),
+                    error -> helper.showError(error));
+        });
+
+        findViewById(R.id.bt_github_get_token).setOnClickListener(v -> helper.showTokenOAuth2(GitHubApi.class));
+
+        findViewById(R.id.bt_github_disconnect).setOnClickListener(v -> helper.closeConnection(GitHubApi.class));
     }
 
     private View findViewById(int resId) {

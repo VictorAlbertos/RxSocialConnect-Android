@@ -277,11 +277,9 @@ public abstract class RxSocialConnectTest {
         onView(withId(R.id.webview)).check(matches(isDisplayed()));
     }
 
-/*    @Test public void Connect_With_Twitter() {
-        //Can not be performed due to security restrictions.
-        //Exception: Caused by: java.lang.RuntimeException: Fatal exception checking document state: Evaluation: status: 13 value: {message=Refused to evaluate a string as JavaScript because 'unsafe-eval' is not an allowed source of script in the following Content Security Policy directive: "script-src https://abs.twimg.com https://abs-0.twimg.com https://twitter.com https://mobile.twitter.com".
-        //} hasMessage: true message: Refused to evaluate a string as JavaScript because 'unsafe-eval' is not an allowed source of script in the following Content Security Policy directive: "script-src https://abs.twimg.com https://abs-0.twimg.com https://twitter.com https://mobile.twitter.com".
-    }*/
+    //Twitter, github Can not be performed due to security restrictions.
+    //Exception: Caused by: java.lang.RuntimeException: Fatal exception checking document state: Evaluation: status: 13 value: {message=Refused to evaluate a string as JavaScript because 'unsafe-eval' is not an allowed source of script in the following Content Security Policy directive: "script-src https://abs.twimg.com https://abs-0.twimg.com https://twitter.com https://mobile.twitter.com".
+    //} hasMessage: true message: Refused to evaluate a string as JavaScript because 'unsafe-eval' is not an allowed source of script in the following Content Security Policy directive: "script-src https://abs.twimg.com https://abs-0.twimg.com https://twitter.com https://mobile.twitter.com".
 
     private Matcher<View> shouldBeEmpty(boolean shouldBeEmpty) {
         return new BoundedMatcher<View, TextView>(TextView.class) {

@@ -31,10 +31,12 @@ public final class OAuth2AccessToken extends com.github.scribejava.core.model.OA
         super(oAuth2AccessToken.getAccessToken(), oAuth2AccessToken.getTokenType(), oAuth2AccessToken.getExpiresIn(),
                 oAuth2AccessToken.getRefreshToken(), oAuth2AccessToken.getScope(), oAuth2AccessToken.getRawResponse());
 
-        this.expirationDate = System.currentTimeMillis() + (oAuth2AccessToken.getExpiresIn() * 1000);
+        if (oAuth2AccessToken.getExpiresIn() == null) this.expirationDate = 0;
+        else this.expirationDate = System.currentTimeMillis() + (oAuth2AccessToken.getExpiresIn() * 1000);
     }
 
     public boolean isExpired() {
+        if (expirationDate == 0) return false;
         return System.currentTimeMillis() > expirationDate;
     }
 
