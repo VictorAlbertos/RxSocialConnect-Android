@@ -27,7 +27,11 @@ import com.github.scribejava.core.model.Token;
 import com.github.scribejava.core.oauth.OAuth10aService;
 import com.github.scribejava.core.oauth.OAuth20Service;
 import com.github.scribejava.core.oauth.OAuthService;
+import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
+import io.reactivex.functions.Function;
 import io.victoralbertos.jolyglot.Jolyglot;
+import java.util.concurrent.Callable;
 import org.fuckboilerplate.rx_social_connect.internal.ActivityConnect;
 import org.fuckboilerplate.rx_social_connect.internal.persistence.OAuth1AccessToken;
 import org.fuckboilerplate.rx_social_connect.internal.persistence.OAuth2AccessToken;
@@ -35,11 +39,8 @@ import org.fuckboilerplate.rx_social_connect.internal.persistence.TokenCache;
 import org.fuckboilerplate.rx_social_connect.internal.services.OAuth1Service;
 import org.fuckboilerplate.rx_social_connect.internal.services.OAuth2Service;
 import org.fuckboilerplate.rx_social_connect.internal.services.Service;
-import rx.Observable;
-import rx.functions.Func0;
-import rx.functions.Func1;
-import rx_activity_result.Result;
-import rx_activity_result.RxActivityResult;
+import rx_activity_result2.Result;
+import rx_activity_result2.RxActivityResult;
 
 public final class RxSocialConnect {
     private static final String ERROR_ENCRYPTION_KEY_IS_NULL = "Error encryption key must not be null";
@@ -78,8 +79,8 @@ public final class RxSocialConnect {
     public static <A extends Activity> Observable<Response<A, com.github.scribejava.core.model.OAuth1AccessToken>> with(A activity, OAuth10aService oAuth10aService) {
         return startActivity(activity, new OAuth1Service(oAuth10aService),
                 oAuth10aService.getApi().getClass().getSimpleName(), OAuth1AccessToken.class)
-                .map(new Func1<Response<Object, OAuth1AccessToken>, Response<A, com.github.scribejava.core.model.OAuth1AccessToken>>() {
-                    @Override public Response<A, com.github.scribejava.core.model.OAuth1AccessToken> call(Response<Object, OAuth1AccessToken> response) {
+                .map(new Function<Response<Object, OAuth1AccessToken>, Response<A, com.github.scribejava.core.model.OAuth1AccessToken>>() {
+                    @Override public Response<A, com.github.scribejava.core.model.OAuth1AccessToken> apply(Response<Object, OAuth1AccessToken> response) {
                         return new Response(response.targetUI(), response.token());
                     }
                 });
@@ -96,8 +97,8 @@ public final class RxSocialConnect {
     public static <A extends Activity> Observable<Response<A, com.github.scribejava.core.model.OAuth2AccessToken>> with(A activity, OAuth20Service oAuth20Service) {
         return startActivity(activity, new OAuth2Service(oAuth20Service),
                 oAuth20Service.getApi().getClass().getSimpleName(), OAuth2AccessToken.class)
-                .map(new Func1<Response<Object, OAuth2AccessToken>, Response<A, com.github.scribejava.core.model.OAuth2AccessToken>>() {
-                    @Override public Response<A, com.github.scribejava.core.model.OAuth2AccessToken> call(Response<Object, OAuth2AccessToken> response) {
+                .map(new Function<Response<Object, OAuth2AccessToken>, Response<A, com.github.scribejava.core.model.OAuth2AccessToken>>() {
+                    @Override public Response<A, com.github.scribejava.core.model.OAuth2AccessToken> apply(Response<Object, OAuth2AccessToken> response) {
                         return new Response(response.targetUI(), response.token());
                     }
                 });
@@ -114,8 +115,8 @@ public final class RxSocialConnect {
     public static <F extends Fragment> Observable<Response<F, com.github.scribejava.core.model.OAuth1AccessToken>> with(F fragment, OAuth10aService oAuth10aService) {
         return startActivity(fragment, new OAuth1Service(oAuth10aService),
                 oAuth10aService.getApi().getClass().getSimpleName(), OAuth1AccessToken.class)
-                .map(new Func1<Response<Object, OAuth1AccessToken>, Response<F, com.github.scribejava.core.model.OAuth1AccessToken>>() {
-                    @Override public Response<F, com.github.scribejava.core.model.OAuth1AccessToken> call(Response<Object, OAuth1AccessToken> response) {
+                .map(new Function<Response<Object, OAuth1AccessToken>, Response<F, com.github.scribejava.core.model.OAuth1AccessToken>>() {
+                    @Override public Response<F, com.github.scribejava.core.model.OAuth1AccessToken> apply(Response<Object, OAuth1AccessToken> response) {
                         return new Response(response.targetUI(), response.token());
                     }
                 });
@@ -132,8 +133,8 @@ public final class RxSocialConnect {
     public static <F extends Fragment> Observable<Response<F, com.github.scribejava.core.model.OAuth2AccessToken>> with(F fragment, OAuth20Service oAuth20Service) {
         return startActivity(fragment, new OAuth2Service(oAuth20Service),
                 oAuth20Service.getApi().getClass().getSimpleName(), OAuth2AccessToken.class)
-                .map(new Func1<Response<Object, OAuth2AccessToken>, Response<F, com.github.scribejava.core.model.OAuth2AccessToken>>() {
-                    @Override public Response<F, com.github.scribejava.core.model.OAuth2AccessToken> call(Response<Object, OAuth2AccessToken> response) {
+                .map(new Function<Response<Object, OAuth2AccessToken>, Response<F, com.github.scribejava.core.model.OAuth2AccessToken>>() {
+                    @Override public Response<F, com.github.scribejava.core.model.OAuth2AccessToken> apply(Response<Object, OAuth2AccessToken> response) {
                         return new Response(response.targetUI(), response.token());
                     }
                 });
@@ -144,8 +145,8 @@ public final class RxSocialConnect {
      * @see BaseApi
      */
     public static Observable<Void> closeConnection(final Class<? extends BaseApi> classApi) {
-        return Observable.defer(new Func0<Observable<Void>>() {
-            @Override public Observable<Void> call() {
+        return Observable.defer(new Callable<ObservableSource<? extends Void>>() {
+            @Override public ObservableSource<? extends Void> call() throws Exception {
                 String keyToken = classApi.getSimpleName();
                 TokenCache.INSTANCE.evict(keyToken);
                 return Observable.just(null);
@@ -157,8 +158,8 @@ public final class RxSocialConnect {
      * Remove all stored tokens from previous oauth authentications cached on disk.
      */
     public static Observable<Void> closeConnections() {
-        return Observable.defer(new Func0<Observable<Void>>() {
-            @Override public Observable<Void> call() {
+        return Observable.defer(new Callable<ObservableSource<? extends Void>>() {
+            @Override public ObservableSource<? extends Void> call() throws Exception {
                 TokenCache.INSTANCE.evictAll();
                 return Observable.just(null);
             }
@@ -171,22 +172,24 @@ public final class RxSocialConnect {
      * @return observable containing an OAuth1AccessToken or if not token cached observable which throws NotTokenFoundException
      */
     public static Observable<com.github.scribejava.core.model.OAuth1AccessToken> getTokenOAuth1(final Class<? extends DefaultApi10a> classApi) {
-        return Observable.defer(new Func0<Observable<com.github.scribejava.core.model.OAuth1AccessToken>>() {
-            @Override public Observable<com.github.scribejava.core.model.OAuth1AccessToken> call() {
-                String keyToken = classApi.getSimpleName();
+        return Observable.defer(
+            new Callable<ObservableSource<? extends com.github.scribejava.core.model.OAuth1AccessToken>>() {
+                @Override public ObservableSource<? extends com.github.scribejava.core.model.OAuth1AccessToken> call()
+                    throws Exception {
+                    String keyToken = classApi.getSimpleName();
 
-                Observable<OAuth1AccessToken> token = (Observable<OAuth1AccessToken>) TokenCache.INSTANCE.get(keyToken, OAuth1AccessToken.class);
-                if (token != null) {
-                    return token.map(new Func1<OAuth1AccessToken, com.github.scribejava.core.model.OAuth1AccessToken>() {
-                        @Override public com.github.scribejava.core.model.OAuth1AccessToken call(OAuth1AccessToken token) {
-                            return token.toOAuth1AccessTokenScribe();
-                        }
-                    });
+                    Observable<OAuth1AccessToken> token = (Observable<OAuth1AccessToken>) TokenCache.INSTANCE.get(keyToken, OAuth1AccessToken.class);
+                    if (token != null) {
+                        return token.map(new Function<OAuth1AccessToken, com.github.scribejava.core.model.OAuth1AccessToken>() {
+                            @Override public com.github.scribejava.core.model.OAuth1AccessToken apply(OAuth1AccessToken token) {
+                                return token.toOAuth1AccessTokenScribe();
+                            }
+                        });
+                    }
+
+                    return Observable.error(new NotActiveTokenFoundException());
                 }
-
-                return Observable.error(new NotActiveTokenFoundException());
-            }
-        });
+            });
     }
 
     /**
@@ -195,22 +198,23 @@ public final class RxSocialConnect {
      * @return observable containing an OAuth2AccessToken or if not token cached observable which throws NotTokenFoundException
      */
     public static Observable<com.github.scribejava.core.model.OAuth2AccessToken> getTokenOAuth2(final Class<? extends DefaultApi20> classApi) {
-        return Observable.defer(new Func0<Observable<com.github.scribejava.core.model.OAuth2AccessToken>>() {
-            @Override public Observable<com.github.scribejava.core.model.OAuth2AccessToken> call() {
-                String keyToken = classApi.getSimpleName();
+        return Observable.defer(new Callable<ObservableSource<? extends com.github.scribejava.core.model.OAuth2AccessToken>>() {
+                @Override public ObservableSource<? extends com.github.scribejava.core.model.OAuth2AccessToken> call()
+                    throws Exception {
+                    String keyToken = classApi.getSimpleName();
 
-                Observable<OAuth2AccessToken> oToken = (Observable<OAuth2AccessToken>) TokenCache.INSTANCE.get(keyToken, OAuth2AccessToken.class);
-                if (oToken != null) {
-                    return oToken.map(new Func1<OAuth2AccessToken, com.github.scribejava.core.model.OAuth2AccessToken>() {
-                        @Override public com.github.scribejava.core.model.OAuth2AccessToken call(OAuth2AccessToken token) {
-                            return token.toOAuth2AccessTokenScribe();
-                        }
-                    });
+                    Observable<OAuth2AccessToken> oToken = (Observable<OAuth2AccessToken>) TokenCache.INSTANCE.get(keyToken, OAuth2AccessToken.class);
+                    if (oToken != null) {
+                        return oToken.map(new Function<OAuth2AccessToken, com.github.scribejava.core.model.OAuth2AccessToken>() {
+                            @Override public com.github.scribejava.core.model.OAuth2AccessToken apply(OAuth2AccessToken token) {
+                                return token.toOAuth2AccessTokenScribe();
+                            }
+                        });
+                    }
+
+                    return Observable.error(new NotActiveTokenFoundException());
                 }
-
-                return Observable.error(new NotActiveTokenFoundException());
-            }
-        });
+            });
     }
 
     private static final String ERROR_RETRIEVING_TOKEN = "Error retrieving token";
@@ -218,8 +222,8 @@ public final class RxSocialConnect {
         Activity activity = targetUI instanceof Activity ? (Activity) targetUI : ((Fragment) targetUI).getActivity();
 
         Observable<T> response = (Observable<T>) TokenCache.INSTANCE.get(keyToken, classToken);
-        if (response != null) return response.map(new Func1<T, Response<Object, T>>() {
-            @Override public Response<Object, T> call(T token) {
+        if (response != null) return response.map(new Function<T, Response<Object, T>>() {
+            @Override public Response<Object, T> apply(T token) {
                 return new Response(targetUI, token);
             }
         });
@@ -238,8 +242,8 @@ public final class RxSocialConnect {
         }
 
         Observable<Result> oResponse = (Observable<Result>) oTempResponse;
-        return oResponse.map(new Func1<Result, Response<Object, T>>() {
-            @Override public Response<Object, T> call(Result result) {
+        return oResponse.map(new Function<Result, Response<Object, T>>() {
+            @Override public Response<Object, T> apply(Result result) {
                 ActivityConnect.service = null;
 
                 if (result.data() == null) throw new RuntimeException(ERROR_RETRIEVING_TOKEN);

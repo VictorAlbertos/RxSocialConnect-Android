@@ -19,10 +19,11 @@ package org.fuckboilerplate.rx_social_connect.internal.services;
 import com.github.scribejava.core.model.Token;
 import com.github.scribejava.core.oauth.OAuthService;
 
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Func0;
-import rx.schedulers.Schedulers;
+import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
+import io.reactivex.schedulers.Schedulers;
+import java.util.concurrent.Callable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 
 public abstract class Service<T extends Token, S extends OAuthService> {
     protected final S service;
@@ -32,8 +33,8 @@ public abstract class Service<T extends Token, S extends OAuthService> {
     }
 
     public Observable<T> oResponse(final String url) {
-        return Observable.defer(new Func0<Observable<T>>() {
-            @Override public Observable<T> call() {
+        return Observable.defer(new Callable<ObservableSource<? extends T>>() {
+            @Override public ObservableSource<? extends T> call() throws Exception {
                 try {
                     return Observable.just(token(url));
                 } catch (Exception e) {
@@ -46,8 +47,8 @@ public abstract class Service<T extends Token, S extends OAuthService> {
     public abstract T token(String url) throws Exception;
 
     public Observable<String> oAuthUrl() {
-        return Observable.defer(new Func0<Observable<String>>() {
-            @Override public Observable<String> call() {
+        return Observable.defer(new Callable<ObservableSource<? extends String>>() {
+            @Override public ObservableSource<? extends String> call() throws Exception {
                 try {
                     return Observable.just(authUrl());
                 } catch (Exception e) {

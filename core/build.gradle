@@ -4,8 +4,8 @@ apply plugin: 'com.github.dcendents.android-maven'
 group='com.github.FuckBoilerplate'
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion "23.0.3"
+    compileSdkVersion 24
+    buildToolsVersion "24.0.1"
 
     defaultConfig {
         minSdkVersion 16
@@ -27,13 +27,13 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:23.4.0'
+    compile 'com.android.support:appcompat-v7:24.2.0'
 
     compile 'com.github.scribejava:scribejava-apis:3.2.0'
-    compile 'io.reactivex:rxjava:1.1.10'
-    compile 'io.reactivex:rxandroid:1.2.1'
+    compile 'io.reactivex.rxjava2:rxandroid:2.0.0-RC1'
+    compile 'io.reactivex.rxjava2:rxjava:2.0.0-RC2'
 
-    compile 'com.github.VictorAlbertos:RxActivityResult:0.3.5'
+    compile "com.github.VictorAlbertos:RxActivityResult:0.3.6-2.x"
     compile 'com.github.VictorAlbertos.Jolyglot:api:0.0.3'
 
     testCompile 'com.github.VictorAlbertos.Jolyglot:gson:0.0.3'

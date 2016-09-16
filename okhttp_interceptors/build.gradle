@@ -4,8 +4,8 @@ apply plugin: 'com.github.dcendents.android-maven'
 group='com.github.FuckBoilerplate'
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion "23.0.3"
+    compileSdkVersion 24
+    buildToolsVersion "24.0.1"
 
     defaultConfig {
         minSdkVersion 16
@@ -25,13 +25,13 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile project(':core')
 
-    compile 'com.android.support:appcompat-v7:23.4.0'
-    compile 'com.squareup.okhttp3:okhttp:3.4.1'
+    compile 'com.android.support:appcompat-v7:24.2.0'
+    compile 'com.squareup.okhttp3:okhttp:3.3.0'
 
     testCompile 'junit:junit:4.12'
-    testCompile "com.squareup.retrofit2:retrofit:2.0.1"
-    testCompile "com.squareup.retrofit2:adapter-rxjava:2.0.1"
-    testCompile "com.squareup.retrofit2:converter-gson:2.0.1"
+    testCompile "com.squareup.retrofit2:retrofit:2.1.0"
+    testCompile 'com.jakewharton.retrofit:retrofit2-rxjava2-adapter:1.0.0-RC2'
+    testCompile "com.squareup.retrofit2:converter-gson:2.1.0"
 }
 
 // build a jar with source files

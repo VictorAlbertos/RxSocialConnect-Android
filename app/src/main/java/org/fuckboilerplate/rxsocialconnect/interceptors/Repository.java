@@ -5,15 +5,14 @@ import com.github.scribejava.apis.YahooApi;
 import com.github.scribejava.core.builder.ServiceBuilder;
 import com.github.scribejava.core.oauth.OAuth10aService;
 import com.github.scribejava.core.oauth.OAuth20Service;
-
+import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
+import io.reactivex.Observable;
 import io.victoralbertos.rx_social_connect.OAuth1Interceptor;
 import io.victoralbertos.rx_social_connect.OAuth2Interceptor;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.GET;
-import rx.Observable;
 
 public class Repository {
     private final YahooApiRest yahooApiRest;
@@ -32,7 +31,7 @@ public class Repository {
         return new Retrofit.Builder()
                 .baseUrl(FacebookApiRest.URL_BASE)
                 .client(client)
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build().create(FacebookApiRest.class);
     }
@@ -45,7 +44,7 @@ public class Repository {
         return new Retrofit.Builder()
                 .baseUrl(YahooApiRest.URL_BASE)
                 .client(client)
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build().create(YahooApiRest.class);
     }
@@ -61,8 +60,7 @@ public class Repository {
     interface YahooApiRest {
         String URL_BASE = "https://social.yahooapis.com";
 
-        @GET("/v1/user/me/profile?format=json")
-        Observable<Object> me();
+        @GET("/v1/user/me/profile?format=json") Observable<Object> me();
     }
 
     interface FacebookApiRest {

@@ -21,6 +21,7 @@ import com.github.scribejava.core.model.OAuthRequest;
 import com.github.scribejava.core.model.Verb;
 import com.github.scribejava.core.oauth.OAuth10aService;
 
+import io.reactivex.Observable;
 import org.fuckboilerplate.rx_social_connect.NotActiveTokenFoundException;
 import org.fuckboilerplate.rx_social_connect.RxSocialConnect;
 
@@ -30,7 +31,6 @@ import java.util.Map;
 import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;
-import rx.Observable;
 
 public class OAuth1Interceptor implements Interceptor {
     protected final OAuth10aService service;
@@ -48,7 +48,7 @@ public class OAuth1Interceptor implements Interceptor {
         OAuthRequest requestOAuth = new OAuthRequest(verb, url, service);
         Request.Builder builderRequest = request.newBuilder();
 
-        OAuth1AccessToken token = getOToken().toBlocking().first();
+        OAuth1AccessToken token = getOToken().blockingFirst();
         service.signRequest(token, requestOAuth);
 
         Map<String, String> headers = requestOAuth.getHeaders();

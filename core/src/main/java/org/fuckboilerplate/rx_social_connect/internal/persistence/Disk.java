@@ -17,16 +17,13 @@
 package org.fuckboilerplate.rx_social_connect.internal.persistence;
 
 import com.github.scribejava.core.model.Token;
-
+import io.reactivex.Observable;
 import io.victoralbertos.jolyglot.Jolyglot;
-import org.fuckboilerplate.rx_social_connect.internal.encryption.BuiltInEncryptor;
-import org.fuckboilerplate.rx_social_connect.internal.encryption.FileEncryptor;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-
-import rx.Observable;
+import org.fuckboilerplate.rx_social_connect.internal.encryption.BuiltInEncryptor;
+import org.fuckboilerplate.rx_social_connect.internal.encryption.FileEncryptor;
 
 public class Disk<T extends Token> {
     private final File cacheDirectory;

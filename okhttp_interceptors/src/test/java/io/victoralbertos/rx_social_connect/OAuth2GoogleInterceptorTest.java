@@ -17,21 +17,20 @@
 package io.victoralbertos.rx_social_connect;
 
 import com.github.scribejava.core.model.OAuth2AccessToken;
-
+import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
+import io.reactivex.Observable;
 import io.victoralbertos.rx_social_connect.base.OAuth2InterceptorTest;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.GET;
-import rx.Observable;
 
 public class OAuth2GoogleInterceptorTest extends OAuth2InterceptorTest {
 
     @Override protected Observable<Object> getApiCallWithoutInterceptor() {
         return new Retrofit.Builder()
                 .baseUrl(OAuth2Api.URL_BASE)
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build().create(OAuth2Api.class)
                 .me();
@@ -45,7 +44,7 @@ public class OAuth2GoogleInterceptorTest extends OAuth2InterceptorTest {
         return new Retrofit.Builder()
                 .baseUrl(OAuth2Api.URL_BASE)
                 .client(client)
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build().create(OAuth2Api.class)
                 .me();

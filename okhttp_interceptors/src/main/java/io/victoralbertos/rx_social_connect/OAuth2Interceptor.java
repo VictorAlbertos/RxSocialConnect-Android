@@ -18,16 +18,13 @@ package io.victoralbertos.rx_social_connect;
 
 import com.github.scribejava.core.builder.api.DefaultApi20;
 import com.github.scribejava.core.model.OAuth2AccessToken;
-
-import org.fuckboilerplate.rx_social_connect.NotActiveTokenFoundException;
-import org.fuckboilerplate.rx_social_connect.RxSocialConnect;
-
+import io.reactivex.Observable;
 import java.io.IOException;
-
 import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;
-import rx.Observable;
+import org.fuckboilerplate.rx_social_connect.NotActiveTokenFoundException;
+import org.fuckboilerplate.rx_social_connect.RxSocialConnect;
 
 public class OAuth2Interceptor implements Interceptor {
     private final Class<? extends DefaultApi20> apiClass;
@@ -37,7 +34,7 @@ public class OAuth2Interceptor implements Interceptor {
     }
 
     @Override public Response intercept(Chain chain) throws IOException, NotActiveTokenFoundException {
-        String token = getOToken().toBlocking().first().getAccessToken();
+        String token = getOToken().blockingFirst().getAccessToken();
         Request request = chain.request();
 
         Request.Builder builderRequest = request.newBuilder();

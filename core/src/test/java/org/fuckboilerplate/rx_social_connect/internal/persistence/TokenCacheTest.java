@@ -18,6 +18,8 @@ package org.fuckboilerplate.rx_social_connect.internal.persistence;
 
 import com.github.scribejava.apis.FacebookApi;
 import com.github.scribejava.apis.TwitterApi;
+import io.reactivex.Observable;
+import io.reactivex.observers.TestObserver;
 import io.victoralbertos.jolyglot.GsonSpeaker;
 import io.victoralbertos.jolyglot.Jolyglot;
 import org.junit.ClassRule;
@@ -25,8 +27,6 @@ import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import org.junit.runners.MethodSorters;
-import rx.Observable;
-import rx.observers.TestSubscriber;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertNull;
@@ -45,23 +45,23 @@ public class TokenCacheTest {
 
         TokenCache.INSTANCE.save(TOKEN_KEY, OAUTH1_ACCESS_TOKEN);
 
-        TestSubscriber<com.github.scribejava.core.model.OAuth1AccessToken> testSubscriber = new TestSubscriber<>();
+        TestObserver<com.github.scribejava.core.model.OAuth1AccessToken> testSubscriber = new TestObserver<>();
         Observable<com.github.scribejava.core.model.OAuth1AccessToken> oToken = (Observable<com.github.scribejava.core.model.OAuth1AccessToken>) TokenCache.INSTANCE.get(TOKEN_KEY, OAuth1AccessToken.class);
         oToken.subscribe(testSubscriber);
         testSubscriber.awaitTerminalEvent();
 
-        assertThat(testSubscriber.getOnNextEvents().get(0).getToken(), is(TOKEN));
+        assertThat(testSubscriber.values().get(0).getToken(), is(TOKEN));
     }
 
     @Test public void _2_When_Retrieve_After_Memory_Destroyed_Get_It() {
         TokenCache.INSTANCE.init(temporaryFolder.getRoot(), "key", jsonConverter());
 
-        TestSubscriber<com.github.scribejava.core.model.OAuth1AccessToken> testSubscriber = new TestSubscriber<>();
+        TestObserver<com.github.scribejava.core.model.OAuth1AccessToken> testSubscriber = new TestObserver<>();
         Observable<com.github.scribejava.core.model.OAuth1AccessToken> oToken = (Observable<com.github.scribejava.core.model.OAuth1AccessToken>) TokenCache.INSTANCE.get(TOKEN_KEY, OAuth1AccessToken.class);
         oToken.subscribe(testSubscriber);
         testSubscriber.awaitTerminalEvent();
 
-        assertThat(testSubscriber.getOnNextEvents().get(0).getToken(), is(TOKEN));
+        assertThat(testSubscriber.values().get(0).getToken(), is(TOKEN));
     }
 
     @Test public void _3_When_Evict_And_Retrieve_It_Get_Null() {
@@ -78,19 +78,19 @@ public class TokenCacheTest {
         TokenCache.INSTANCE.save(TOKEN_KEY, OAUTH1_ACCESS_TOKEN);
         TokenCache.INSTANCE.save(TOKEN_KEY_2, OAUTH2_ACCESS_TOKEN);
 
-        TestSubscriber<com.github.scribejava.core.model.OAuth1AccessToken> testSubscriberToken1 = new TestSubscriber<>();
+        TestObserver<com.github.scribejava.core.model.OAuth1AccessToken> testSubscriberToken1 = new TestObserver<>();
         Observable<com.github.scribejava.core.model.OAuth1AccessToken> oToken = (Observable<com.github.scribejava.core.model.OAuth1AccessToken>) TokenCache.INSTANCE.get(TOKEN_KEY, OAuth1AccessToken.class);
         oToken.subscribe(testSubscriberToken1);
         testSubscriberToken1.awaitTerminalEvent();
 
-        assertThat(testSubscriberToken1.getOnNextEvents().get(0).getToken(), is(TOKEN));
+        assertThat(testSubscriberToken1.values().get(0).getToken(), is(TOKEN));
 
-        TestSubscriber<com.github.scribejava.core.model.OAuth2AccessToken> testSubscriberToken2 = new TestSubscriber<>();
+        TestObserver<com.github.scribejava.core.model.OAuth2AccessToken> testSubscriberToken2 = new TestObserver<>();
         Observable<com.github.scribejava.core.model.OAuth2AccessToken> oToken2 = (Observable<com.github.scribejava.core.model.OAuth2AccessToken>) TokenCache.INSTANCE.get(TOKEN_KEY_2, OAuth2AccessToken.class);
         oToken2.subscribe(testSubscriberToken2);
         testSubscriberToken2.awaitTerminalEvent();
 
-        assertThat(testSubscriberToken2.getOnNextEvents().get(0).getAccessToken(), is(TOKEN));
+        assertThat(testSubscriberToken2.values().get(0).getAccessToken(), is(TOKEN));
 
         TokenCache.INSTANCE.evict(TOKEN_KEY);
         TokenCache.INSTANCE.evict(TOKEN_KEY_2);

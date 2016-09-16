@@ -18,15 +18,12 @@ package org.fuckboilerplate.rx_social_connect.internal.persistence;
 
 import android.content.Context;
 import android.support.annotation.VisibleForTesting;
-
 import com.github.scribejava.core.model.Token;
-
+import io.reactivex.Observable;
 import io.victoralbertos.jolyglot.Jolyglot;
 import java.io.File;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
-
-import rx.Observable;
 
 public enum TokenCache {
     INSTANCE();

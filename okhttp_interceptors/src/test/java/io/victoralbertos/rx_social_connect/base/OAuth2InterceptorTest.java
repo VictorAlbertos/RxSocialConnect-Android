@@ -18,21 +18,18 @@ package io.victoralbertos.rx_social_connect.base;
 
 import com.github.scribejava.core.builder.api.DefaultApi20;
 import com.github.scribejava.core.model.OAuth2AccessToken;
-
+import com.jakewharton.retrofit2.adapter.rxjava2.HttpException;
+import io.reactivex.Observable;
+import io.reactivex.observers.TestObserver;
+import io.victoralbertos.rx_social_connect.OAuth2Interceptor;
+import java.io.IOException;
 import org.fuckboilerplate.rx_social_connect.NotActiveTokenFoundException;
 import org.junit.Test;
-
-import java.io.IOException;
-
-import io.victoralbertos.rx_social_connect.OAuth2Interceptor;
-import retrofit2.adapter.rxjava.HttpException;
-import rx.Observable;
-import rx.observers.TestSubscriber;
 
 public abstract class OAuth2InterceptorTest {
 
     @Test public void Get_Method_Throws_HttpException_Without_Interceptor() throws IOException {
-        TestSubscriber<Object> testSubscriber = new TestSubscriber<>();
+        TestObserver<Object> testSubscriber = new TestObserver<>();
 
         getApiCallWithoutInterceptor().subscribe(testSubscriber);
         testSubscriber.awaitTerminalEvent();
@@ -43,7 +40,7 @@ public abstract class OAuth2InterceptorTest {
     @Test public void Get_Method_Throws_NotActiveTokenFoundException_With_Interceptor_With_Invalid_Token() throws IOException {
         OAuth2Interceptor interceptor = new OAuthInterceptorInvalidToken(null);
 
-        TestSubscriber<Object> testSubscriber = new TestSubscriber<>();
+        TestObserver<Object> testSubscriber = new TestObserver<>();
 
         getApiCallWithInterceptor(interceptor).subscribe(testSubscriber);
         testSubscriber.awaitTerminalEvent();
@@ -53,7 +50,7 @@ public abstract class OAuth2InterceptorTest {
 
     @Test public void Get_Method_Success_With_Interceptor_With_Valid_Token() throws IOException {
         OAuth2Interceptor interceptor = new OAuthInterceptorValidToken(null);
-        TestSubscriber<Object> testSubscriber = new TestSubscriber<>();
+        TestObserver<Object> testSubscriber = new TestObserver<>();
 
         getApiCallWithInterceptor(interceptor).subscribe(testSubscriber);
         testSubscriber.awaitTerminalEvent();

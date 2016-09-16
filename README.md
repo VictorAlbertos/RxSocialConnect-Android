@@ -37,8 +37,8 @@ allprojects {
 And add next dependencies in the build.gradle of android app module:
 ```gradle
 dependencies {
-    compile 'com.github.VictorAlbertos.RxSocialConnect-Android:core:0.1.4'
-    compile "io.reactivex:rxjava:1.1.10"
+    compile 'com.github.VictorAlbertos.RxSocialConnect-Android:core:0.1.4-2.x'
+    compile 'io.reactivex.rxjava2:rxjava:2.0.0-RC2'
 }
 ```
 
@@ -170,7 +170,7 @@ First of all, install RxSocialConnectInterceptors library using gradle:
 
 ```gradle
 dependencies {
-    compile 'com.github.VictorAlbertos.RxSocialConnect-Android:okhttp_interceptors:0.1.4'
+    compile 'com.github.VictorAlbertos.RxSocialConnect-Android:okhttp_interceptors:0.1.4-2.x'
 }
 ``` 
 
@@ -232,4 +232,3 @@ Now you are ready to perform any http call against any api in the same way you w
 * [RxActivityResult](https://github.com/VictorAlbertos/RxActivityResult): A reactive-tiny-badass-vindictive library to break with the OnActivityResult implementation as it breaks the observables chain.
 * [RxFcm](https://github.com/VictorAlbertos/RxFcm): RxJava extension for Android Firebase Cloud Messaging (aka fcm).
 * [RxPaparazzo](https://github.com/FuckBoilerplate/RxPaparazzo): RxJava extension for Android to take images using camera and gallery.
- 

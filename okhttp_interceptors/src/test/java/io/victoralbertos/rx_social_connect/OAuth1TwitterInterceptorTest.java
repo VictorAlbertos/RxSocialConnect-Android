@@ -20,14 +20,13 @@ import com.github.scribejava.apis.TwitterApi;
 import com.github.scribejava.core.builder.ServiceBuilder;
 import com.github.scribejava.core.model.OAuth1AccessToken;
 import com.github.scribejava.core.oauth.OAuth10aService;
-
+import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
+import io.reactivex.Observable;
 import io.victoralbertos.rx_social_connect.base.OAuth1InterceptorTest;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.GET;
-import rx.Observable;
 
 public class OAuth1TwitterInterceptorTest extends OAuth1InterceptorTest {
 
@@ -52,7 +51,7 @@ public class OAuth1TwitterInterceptorTest extends OAuth1InterceptorTest {
     @Override protected Observable<Object> getApiCallWithoutInterceptor() {
         return new Retrofit.Builder()
                 .baseUrl(OAuth1Api.URL_BASE)
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build().create(OAuth1Api.class)
                 .me();
@@ -66,7 +65,7 @@ public class OAuth1TwitterInterceptorTest extends OAuth1InterceptorTest {
         return new Retrofit.Builder()
                 .baseUrl(OAuth1Api.URL_BASE)
                 .client(client)
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build().create(OAuth1Api.class)
                 .me();
