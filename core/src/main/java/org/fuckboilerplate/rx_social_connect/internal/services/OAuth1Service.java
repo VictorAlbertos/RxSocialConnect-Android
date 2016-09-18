@@ -21,6 +21,8 @@ import android.net.Uri;
 import com.github.scribejava.core.model.OAuth1RequestToken;
 import com.github.scribejava.core.oauth.OAuth10aService;
 import org.fuckboilerplate.rx_social_connect.internal.persistence.OAuth1AccessToken;
+import org.fuckboilerplate.rx_social_connect.query_string.QueryString;
+import org.fuckboilerplate.rx_social_connect.query_string.QueryStringStrategy;
 
 public final class OAuth1Service extends Service<OAuth1AccessToken, OAuth10aService> {
 
@@ -31,10 +33,12 @@ public final class OAuth1Service extends Service<OAuth1AccessToken, OAuth10aServ
     @Override public OAuth1AccessToken token(String url) throws Exception {
         Uri uri = Uri.parse(url);
 
-        String error = uri.getQueryParameter("error");
+        QueryStringStrategy strategy = QueryString.PARSER.getStrategyOAuth1();
+
+        String error = strategy.extractError(uri);
         if (error != null && !error.isEmpty()) throw new RuntimeException(error);
 
-        String verifier = uri.getQueryParameter("oauth_verifier");
+        String verifier = strategy.extractCode(uri);
         return new OAuth1AccessToken(
             service.getAccessToken(oAuth1RequestToken, verifier)
         );
