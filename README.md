@@ -37,7 +37,7 @@ allprojects {
 And add next dependencies in the build.gradle of android app module:
 ```gradle
 dependencies {
-    compile 'com.github.VictorAlbertos.RxSocialConnect-Android:core:0.1.4-2.x'
+    compile 'com.github.VictorAlbertos.RxSocialConnect-Android:core:0.1.6-2.x'
     compile 'io.reactivex.rxjava2:rxjava:2.0.0-RC2'
 }
 ```
@@ -170,7 +170,7 @@ First of all, install RxSocialConnectInterceptors library using gradle:
 
 ```gradle
 dependencies {
-    compile 'com.github.VictorAlbertos.RxSocialConnect-Android:okhttp_interceptors:0.1.4-2.x'
+    compile 'com.github.VictorAlbertos.RxSocialConnect-Android:okhttp_interceptors:0.1.6-2.x'
 }
 ``` 
 
