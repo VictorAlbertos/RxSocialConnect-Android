@@ -30,25 +30,8 @@ public enum QueryString {
   private QueryStringStrategy strategyOAuth2;
 
   QueryString() {
-    strategyOAuth1 = new QueryStringStrategy() {
-      @Override public String extractCode(Uri uri) {
-        return uri.getQueryParameter("oauth_verifier");
-      }
-
-      @Override public String extractError(Uri uri) {
-        return uri.getQueryParameter("error");
-      }
-    };
-
-    strategyOAuth2 = new QueryStringStrategy() {
-      @Override public String extractCode(Uri uri) {
-        return uri.getQueryParameter("code");
-      }
-
-      @Override public String extractError(Uri uri) {
-        return uri.getQueryParameter("error");
-      }
-    };
+    strategyOAuth1 = defaultStrategyOAuth1();
+    strategyOAuth2 = defaultStrategyOAuth2();
   }
 
   /**
@@ -65,11 +48,49 @@ public enum QueryString {
     this.strategyOAuth2 = strategyOauth2;
   }
 
+  /**
+   * Reset QueryStringStrategy for OAuth1 providers to default
+   */
+  public void resetStrategyOAuth1() {
+    this.strategyOAuth1 = defaultStrategyOAuth1();
+  }
+
+  /**
+   * Reset QueryStringStrategy for OAuth2 providers to default
+   */
+  public void resetStrategyOAuth2() {
+    this.strategyOAuth2 = defaultStrategyOAuth2();
+  }
+
   public QueryStringStrategy getStrategyOAuth1() {
     return strategyOAuth1;
   }
 
   public QueryStringStrategy getStrategyOAuth2() {
     return strategyOAuth2;
+  }
+
+  private QueryStringStrategy defaultStrategyOAuth1() {
+    return new QueryStringStrategy() {
+      @Override public String extractCode(Uri uri) {
+        return uri.getQueryParameter("oauth_verifier");
+      }
+
+      @Override public String extractError(Uri uri) {
+        return uri.getQueryParameter("error");
+      }
+    };
+  }
+
+  private QueryStringStrategy defaultStrategyOAuth2() {
+    return new QueryStringStrategy() {
+      @Override public String extractCode(Uri uri) {
+        return uri.getQueryParameter("code");
+      }
+
+      @Override public String extractError(Uri uri) {
+        return uri.getQueryParameter("error");
+      }
+    };
   }
 }
