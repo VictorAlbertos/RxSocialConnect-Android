@@ -144,12 +144,12 @@ public final class RxSocialConnect {
      * Remove an stored token from a previous oauth authentication cached on disk.
      * @see BaseApi
      */
-    public static Observable<Void> closeConnection(final Class<? extends BaseApi> classApi) {
-        return Observable.defer(new Callable<ObservableSource<? extends Void>>() {
-            @Override public ObservableSource<? extends Void> call() throws Exception {
+    public static Observable<Object> closeConnection(final Class<? extends BaseApi> classApi) {
+        return Observable.defer(new Callable<ObservableSource<? extends Object>>() {
+            @Override public ObservableSource<? extends Object> call() throws Exception {
                 String keyToken = classApi.getSimpleName();
                 TokenCache.INSTANCE.evict(keyToken);
-                return Observable.just(null);
+                return Observable.just(1);
             }
         });
     }
@@ -157,11 +157,11 @@ public final class RxSocialConnect {
     /**
      * Remove all stored tokens from previous oauth authentications cached on disk.
      */
-    public static Observable<Void> closeConnections() {
-        return Observable.defer(new Callable<ObservableSource<? extends Void>>() {
-            @Override public ObservableSource<? extends Void> call() throws Exception {
+    public static Observable<Object> closeConnections() {
+        return Observable.defer(new Callable<ObservableSource<? extends Object>>() {
+            @Override public ObservableSource<? extends Object> call() throws Exception {
                 TokenCache.INSTANCE.evictAll();
-                return Observable.just(null);
+                return Observable.just(1);
             }
         });
     }
