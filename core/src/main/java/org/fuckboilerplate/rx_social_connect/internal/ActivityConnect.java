@@ -38,7 +38,8 @@ public class ActivityConnect extends Activity {
     public static final String KEY_RESULT = "key_result";
     public static Service<? extends Token, ? extends OAuthService> service;
 
-    @Override protected void onCreate(Bundle savedInstanceState) {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.connection_activity);
         initWebView();
@@ -49,19 +50,25 @@ public class ActivityConnect extends Activity {
         clearCookies(webView);
 
         webView.setWebViewClient(new WebViewClient() {
-            @Override public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                if (!url.startsWith(service.callbackUrl())) return super.shouldOverrideUrlLoading(view, url);
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                if (service == null || !url.startsWith(service.callbackUrl()))
+                    return super.shouldOverrideUrlLoading(view, url);
 
                 webView.setVisibility(View.GONE);
 
                 service.oResponse(url).subscribe(new Subscriber<Token>() {
-                    @Override public void onCompleted() {}
+                    @Override
+                    public void onCompleted() {
+                    }
 
-                    @Override public void onError(Throwable error) {
+                    @Override
+                    public void onError(Throwable error) {
                         finishWithError(error);
                     }
 
-                    @Override public void onNext(Token token) {
+                    @Override
+                    public void onNext(Token token) {
                         finishWithToken(token);
                     }
                 });
@@ -69,20 +76,26 @@ public class ActivityConnect extends Activity {
                 return true;
             }
 
-            @Override public void onPageFinished(WebView view, String url) {}
+            @Override
+            public void onPageFinished(WebView view, String url) {
+            }
         });
 
         webView.getSettings().setJavaScriptEnabled(true);
         webView.getSettings().setDomStorageEnabled(true);
 
         service.oAuthUrl().subscribe(new Subscriber<String>() {
-            @Override public void onCompleted() {}
+            @Override
+            public void onCompleted() {
+            }
 
-            @Override public void onError(Throwable error) {
+            @Override
+            public void onError(Throwable error) {
                 finishWithError(error);
             }
 
-            @Override public void onNext(String url) {
+            @Override
+            public void onNext(String url) {
                 webView.loadUrl(url);
             }
         });
