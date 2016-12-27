@@ -16,6 +16,7 @@
 
 package org.fuckboilerplate.rx_social_connect.internal;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
@@ -23,19 +24,24 @@ import android.os.Bundle;
 import android.view.View;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
+import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+
 import com.github.scribejava.core.model.Token;
 import com.github.scribejava.core.oauth.OAuthService;
-import io.reactivex.functions.Consumer;
+
 import org.fuckboilerplate.rx_social_connect.R;
 import org.fuckboilerplate.rx_social_connect.internal.services.Service;
+
+import io.reactivex.functions.Consumer;
 
 public class ActivityConnect extends Activity {
     public static final String KEY_RESULT = "key_result";
     public static Service<? extends Token, ? extends OAuthService> service;
 
-    @Override protected void onCreate(Bundle savedInstanceState) {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.connection_activity);
         initWebView();
@@ -46,36 +52,59 @@ public class ActivityConnect extends Activity {
         clearCookies(webView);
 
         webView.setWebViewClient(new WebViewClient() {
-            @Override public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                if (!url.startsWith(service.callbackUrl())) return super.shouldOverrideUrlLoading(view, url);
 
-                webView.setVisibility(View.GONE);
+            @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+                String url = request.getUrl().toString();
+                if (service == null || !url.startsWith(service.callbackUrl()))
+                    return super.shouldOverrideUrlLoading(view, request);
 
-                service.oResponse(url).subscribe(new Consumer<Token>() {
-                    @Override public void accept(Token token) throws Exception {
-                        finishWithToken(token);
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override public void accept(Throwable error) throws Exception {
-                        finishWithError(error);
-                    }
-                });
-
+                handleUrlOverride(url);
                 return true;
             }
 
-            @Override public void onPageFinished(WebView view, String url) {}
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                if (service == null || !url.startsWith(service.callbackUrl()))
+                    return super.shouldOverrideUrlLoading(view, url);
+
+                handleUrlOverride(url);
+                return true;
+            }
+
+            @Override
+            public void onPageFinished(WebView view, String url) {
+            }
+
+            private void handleUrlOverride(String url) {
+                webView.setVisibility(View.GONE);
+
+                service.oResponse(url).subscribe(new Consumer<Token>() {
+                    @Override
+                    public void accept(Token token) throws Exception {
+                        finishWithToken(token);
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable error) throws Exception {
+                        finishWithError(error);
+                    }
+                });
+            }
         });
 
         webView.getSettings().setJavaScriptEnabled(true);
         webView.getSettings().setDomStorageEnabled(true);
 
         service.oAuthUrl().subscribe(new Consumer<String>() {
-            @Override public void accept(String url) throws Exception {
+            @Override
+            public void accept(String url) throws Exception {
                 webView.loadUrl(url);
             }
         }, new Consumer<Throwable>() {
-            @Override public void accept(Throwable error) throws Exception {
+            @Override
+            public void accept(Throwable error) throws Exception {
                 finishWithError(error);
             }
         });
