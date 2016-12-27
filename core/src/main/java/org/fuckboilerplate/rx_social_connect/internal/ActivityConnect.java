@@ -25,11 +25,14 @@ import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+
 import com.github.scribejava.core.model.Token;
 import com.github.scribejava.core.oauth.OAuthService;
-import io.reactivex.functions.Consumer;
+
 import org.fuckboilerplate.rx_social_connect.R;
 import org.fuckboilerplate.rx_social_connect.internal.services.Service;
+
+import io.reactivex.functions.Consumer;
 
 public class ActivityConnect extends Activity {
     public static final String KEY_RESULT = "key_result";
@@ -47,7 +50,7 @@ public class ActivityConnect extends Activity {
 
         webView.setWebViewClient(new WebViewClient() {
             @Override public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                if (!url.startsWith(service.callbackUrl())) return super.shouldOverrideUrlLoading(view, url);
+                if (service == null || !url.startsWith(service.callbackUrl())) return super.shouldOverrideUrlLoading(view, url);
 
                 webView.setVisibility(View.GONE);
 
