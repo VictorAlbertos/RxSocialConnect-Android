@@ -1,3 +1,5 @@
+## [DISCLAIMER] Branch 1.x will not be any longer actively maintained. Upgrade to RxJava 2.x asap.
+
 [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-RxSocialConnect--Android-brightgreen.svg?style=flat)](http://android-arsenal.com/details/1/3616)
 
 OAuth RxJava extension for Android. iOS version is located at this [repository](https://github.com/FuckBoilerplate/RxSocialConnect-iOS). 
@@ -37,8 +39,8 @@ allprojects {
 And add next dependencies in the build.gradle of android app module:
 ```gradle
 dependencies {
-    compile 'com.github.VictorAlbertos.RxSocialConnect-Android:core:1.0.0'
-    compile "io.reactivex:rxjava:1.2.1"
+    compile 'com.github.VictorAlbertos.RxSocialConnect-Android:core:1.0.1-1.x'
+    compile "io.reactivex:rxjava:1.2.6"
 }
 ```
 
@@ -170,7 +172,7 @@ First of all, install RxSocialConnectInterceptors library using gradle:
 
 ```gradle
 dependencies {
-    compile 'com.github.VictorAlbertos.RxSocialConnect-Android:okhttp_interceptors:1.0.0'
+    compile 'com.github.VictorAlbertos.RxSocialConnect-Android:okhttp_interceptors:1.0.1-1.x'
 }
 ``` 
 
