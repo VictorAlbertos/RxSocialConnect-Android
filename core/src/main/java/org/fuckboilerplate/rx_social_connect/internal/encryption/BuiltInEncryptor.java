@@ -23,20 +23,25 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.security.SecureRandom;
+import java.security.spec.KeySpec;
 
 import javax.crypto.Cipher;
 import javax.crypto.CipherInputStream;
 import javax.crypto.CipherOutputStream;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
 
 /**
  * Encrypt/Decrypt the file data
  */
 public class BuiltInEncryptor implements Encryptor {
-    private static final int KEY_LENGTH = 128;  // Max 128 bits by default. See http://stackoverflow.com/a/24907555/5502014
+    private static final int KEY_LENGTH = 256;
     private static final int FILE_BUF = 1024;
+    private static final int ITERATIONS = 1000;
+    private static final String SALT = "RxSocialConnect-Android";
     private Cipher encryptCipher;
     private Cipher decryptCipher;
 
@@ -68,7 +73,7 @@ public class BuiltInEncryptor implements Encryptor {
 
     private void initCiphers(String key) {
         try {
-            SecretKeySpec secretKey = generateSecretKey(key);
+            SecretKey secretKey = generateSecretKey(key);
 
             encryptCipher = Cipher.getInstance("AES");
             encryptCipher.init(Cipher.ENCRYPT_MODE, secretKey);
@@ -80,14 +85,10 @@ public class BuiltInEncryptor implements Encryptor {
         }
     }
 
-    private SecretKeySpec generateSecretKey(String key) throws Exception {
-        SecureRandom secureRandom = SecureRandom.getInstance("SHA1PRNG");
-        secureRandom.setSeed(key.getBytes("UTF-8"));
-        KeyGenerator keyGenerator = KeyGenerator.getInstance("AES");
-        keyGenerator.init(KEY_LENGTH, secureRandom);
-        SecretKey secretKey = keyGenerator.generateKey();
-
-        return new SecretKeySpec(secretKey.getEncoded(), "AES");
+    private SecretKey generateSecretKey(String key) throws Exception {
+        SecretKeyFactory secretKeyFactory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
+        KeySpec keySpec = new PBEKeySpec(key.toCharArray(), SALT.getBytes(), ITERATIONS, KEY_LENGTH);
+        return secretKeyFactory.generateSecret(keySpec);
     }
 
     private void write(InputStream is, OutputStream os) {
